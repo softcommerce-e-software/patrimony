@@ -1,0 +1,171 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuth() {
+      return request.auth.uid != null;
+    }
+    function getCompany(company) {
+      return get(/databases/$(database)/documents/companies/$(company)).data;
+    }
+    function isOwner(company) {
+      return isAuth() && getCompany(company).owner == request.auth.uid;
+    }
+    function isSimple(company) {
+      return isOwner(company) || request.auth.uid in getCompany(company).users;
+    }
+
+    match /companies/{company}/{document=**} {
+      allow read: if isSimple(company);
+      allow write: if isOwner(company);
+    }
+    match /companies/{document} {
+      allow read: if isAuth()
+        && (resource.data.owner == request.auth.uid || request.auth.uid in resource.data.users);
+      allow write: if isAuth()
+        && resource.data.owner == request.auth.uid;
+    }
+
+    match /type/{document} {
+      allow read: if isAuth();
+    }
+
+    match /conservation_state/{document} {
+      allow read: if isAuth();
+    }
+
+    match /users/{document} {
+      allow read: if isAuth() && request.auth.uid == document;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

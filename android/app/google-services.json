@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "1041526288855",
+    "project_id": "patrimony-f51f9",
+    "storage_bucket": "patrimony-f51f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041526288855:android:09afb05ac4da2cafe31b92",
+        "android_client_info": {
+          "package_name": "com.sodremr.patrimony"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041526288855-4nn1vjs3068n1gkstoll1m5b1ie19pgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.patrimony",
+            "certificate_hash": "f8add14d4dcb3a366626ab187db2077c7884da27"
+          }
+        },
+        {
+          "client_id": "1041526288855-i4ihl03cgoe9rp9i32q9ipfe9t4p5q2u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.patrimony",
+            "certificate_hash": "cbcab9103613b0992c55f461e42c8315723ea97b"
+          }
+        },
+        {
+          "client_id": "1041526288855-gaoka0uucms23029osgaouq5ot3s5cbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeea-o5nSGV-g693TMynQCbMX3PzevgIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041526288855-gaoka0uucms23029osgaouq5ot3s5cbp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1041526288855-lvubbob7d45irp60qdlpp5kobu4g750d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sodremr.patrimony"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
