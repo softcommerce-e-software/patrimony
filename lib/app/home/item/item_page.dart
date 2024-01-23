@@ -60,7 +60,7 @@ class _ItemPageState extends State<ItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.entity.patrimony ?? ''),
+        title: Text(widget.entity.code ?? ''),
       ),
       body: _screen(),
     );
@@ -76,7 +76,7 @@ class _ItemPageState extends State<ItemPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _inputText('Código de barras:', widget.entity.code ?? ''),
-                _inputText('Patrimônio:', widget.entity.patrimony ?? ''),
+                _inputText('Patrimônio:', widget.entity.code ?? ''),
                 _inputText('Local de registro:',
                     widget.entity.registrationLocation ?? ''),
                 _dropDown('Local atual:', widget.entity.nowLocation ?? '',

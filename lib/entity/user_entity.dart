@@ -9,9 +9,13 @@ class UserEntity extends HiveObject {
 	@HiveField(0)
 	bool? isAdmin;
 	@HiveField(1)
-	String? uid;
+	String? id;
 	@HiveField(2)
 	String? name;
+	@HiveField(3)
+	String? email;
+	@HiveField(4)
+	String? photo;
 
 	UserEntity();
 
@@ -19,27 +23,17 @@ class UserEntity extends HiveObject {
 
 	Map<String, dynamic> toJson() => $UserEntityToJson(this);
 
-	UserEntity copyWith({bool? isAdmin, String? uid, String? name}) {
+	UserEntity copyWith({bool? isAdmin, String? id, String? name, String? email, String? photo}) {
 		return UserEntity()
 			..isAdmin= isAdmin ?? this.isAdmin
-			..uid= uid ?? this.uid
-			..name= name ?? this.name;
+			..id= id ?? this.id
+			..name= name ?? this.name
+			..email= email ?? this.email
+			..photo= photo ?? this.photo;
 	}
 
 	@override
 	String toString() {
 		return jsonEncode(this);
 	}
-
-	@override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserEntity &&
-          runtimeType == other.runtimeType &&
-          isAdmin == other.isAdmin &&
-          uid == other.uid &&
-          name == other.name;
-
-  @override
-  int get hashCode => isAdmin.hashCode ^ uid.hashCode ^ name.hashCode;
 }

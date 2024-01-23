@@ -10,6 +10,7 @@ import 'package:patrimony/data/user/user_repository_impl.dart';
 import 'package:patrimony/data_remote/user/user_datasource_impl.dart';
 import 'package:patrimony/domain/user/is_logged_usecase.dart';
 import 'package:patrimony/domain/user/user_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppModule extends Module {
   @override
@@ -18,9 +19,9 @@ class AppModule extends Module {
   @override
   void exportedBinds(Injector i) {
     i.addInstance<HiveInterface>(Hive);
-    i.addInstance(FirebaseAuth.instance);
+    i.addInstance(Supabase.instance.client);
+    i.addInstance(Supabase.instance.client.auth);
     i.addInstance(FirebaseRemoteConfig.instance);
-    i.addInstance(FirebaseFirestore.instance);
     i.addLazySingleton<UserRepository>(UserRepositoryImpl.new);
     i.addLazySingleton<UserDataSource>(UserDataSourceImpl.new);
     i.addLazySingleton(IsLoggedUseCase.new);
