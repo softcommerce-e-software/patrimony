@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:patrimony/data/user/user_repository_impl.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
@@ -13,10 +14,13 @@ import 'app/app_widget.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Future.wait([
-    _firebase(),_hive()
-  ]);
+  FlutterNativeSplash.preserve(
+    widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
+  );
+
+  await Future.wait([_firebase(), _hive()]);
+  FlutterNativeSplash.remove();
+
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
 
