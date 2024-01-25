@@ -1,38 +1,31 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:patrimony/generated/json/base/json_field.dart';
 import 'package:patrimony/generated/json/common_value_entity.g.dart';
 import 'dart:convert';
 
-part 'common_value_entity.g.dart';
-const String typeBox = 'typeBox';
-const String conservationStateBox = 'conservationStateBox';
-
 @JsonSerializable()
-@HiveType(typeId: 2)
-class CommonValueEntity extends HiveObject {
-	@HiveField(0)
-	String? id;
-	@HiveField(1)
-	String? value;
+class CommonValueEntity {
+  String? id;
+  String? value;
 
-	CommonValueEntity();
+  CommonValueEntity();
 
-	factory CommonValueEntity.fromJson(Map<String, dynamic> json) => $CommonValueEntityFromJson(json);
+  factory CommonValueEntity.fromJson(Map<String, dynamic> json) =>
+      $CommonValueEntityFromJson(json);
 
-	Map<String, dynamic> toJson() => $CommonValueEntityToJson(this);
+  Map<String, dynamic> toJson() => $CommonValueEntityToJson(this);
 
-	CommonValueEntity copyWith({String? value}) {
-		return CommonValueEntity()
-			..id= id ?? this.id
-			..value= value ?? this.value;
-	}
+  CommonValueEntity copyWith({String? value}) {
+    return CommonValueEntity()
+      ..id = id ?? this.id
+      ..value = value ?? this.value;
+  }
 
-	@override
-	String toString() {
-		return jsonEncode(this);
-	}
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
 
-	@override
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is CommonValueEntity &&

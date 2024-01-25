@@ -32,6 +32,16 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -53,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1041526288855',
     projectId: 'patrimony-f51f9',
     storageBucket: 'patrimony-f51f9.appspot.com',
-    androidClientId: '1041526288855-4nn1vjs3068n1gkstoll1m5b1ie19pgb.apps.googleusercontent.com',
+    androidClientId: '1041526288855-i4ihl03cgoe9rp9i32q9ipfe9t4p5q2u.apps.googleusercontent.com',
     iosClientId: '1041526288855-lvubbob7d45irp60qdlpp5kobu4g750d.apps.googleusercontent.com',
     iosBundleId: 'com.sodremr.patrimony',
   );

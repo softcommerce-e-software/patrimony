@@ -1,45 +1,34 @@
-import 'package:hive/hive.dart';
 import 'package:patrimony/generated/json/base/json_field.dart';
 import 'package:patrimony/generated/json/user_entity.g.dart';
 import 'dart:convert';
 
 @JsonSerializable()
-@HiveType(typeId: 3)
-class UserEntity extends HiveObject {
-	@HiveField(0)
-	bool? isAdmin;
-	@HiveField(1)
-	String? uid;
-	@HiveField(2)
-	String? name;
+class UserEntity {
+  bool? isAdmin;
+  String? id;
+  String? name;
+  String? email;
+  String? photo;
 
-	UserEntity();
+  UserEntity();
 
-	factory UserEntity.fromJson(Map<String, dynamic> json) => $UserEntityFromJson(json);
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      $UserEntityFromJson(json);
 
-	Map<String, dynamic> toJson() => $UserEntityToJson(this);
+  Map<String, dynamic> toJson() => $UserEntityToJson(this);
 
-	UserEntity copyWith({bool? isAdmin, String? uid, String? name}) {
-		return UserEntity()
-			..isAdmin= isAdmin ?? this.isAdmin
-			..uid= uid ?? this.uid
-			..name= name ?? this.name;
-	}
-
-	@override
-	String toString() {
-		return jsonEncode(this);
-	}
-
-	@override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserEntity &&
-          runtimeType == other.runtimeType &&
-          isAdmin == other.isAdmin &&
-          uid == other.uid &&
-          name == other.name;
+  UserEntity copyWith(
+      {bool? isAdmin, String? id, String? name, String? email, String? photo}) {
+    return UserEntity()
+      ..isAdmin = isAdmin ?? this.isAdmin
+      ..id = id ?? this.id
+      ..name = name ?? this.name
+      ..email = email ?? this.email
+      ..photo = photo ?? this.photo;
+  }
 
   @override
-  int get hashCode => isAdmin.hashCode ^ uid.hashCode ^ name.hashCode;
+  String toString() {
+    return jsonEncode(this);
+  }
 }
