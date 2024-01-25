@@ -2,37 +2,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:patrimony/data/user/user_repository_impl.dart';
-import 'package:patrimony/entity/common_value_entity.dart';
-import 'package:patrimony/entity/company_entity.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'app/app_module.dart';
 import 'app/app_widget.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Future.wait([
-    _firebase(),_hive()
-  ]);
+  FlutterNativeSplash.preserve(
+    widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
+  );
+
+  await Future.wait([_firebase(), _supabase()]);
+  FlutterNativeSplash.remove();
+
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
-}
-
-Future<void> _hive() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(CompanyEntityAdapter());
-  Hive.registerAdapter(CommonValueEntityAdapter());
-
-  await Hive.openBox<CompanyEntity>(companyBox);
-  await Hive.openBox<CommonValueEntity>(typeBox);
-  await Hive.openBox<CommonValueEntity>(conservationStateBox);
-  await Hive.openBox<bool>(userAdminBox);
-
-  var adminBox = Hive.box<bool>(userAdminBox);
-  adminBox.clear();
-  adminBox.add(false);
 }
 
 Future<void> _firebase() async {
@@ -42,10 +26,15 @@ Future<void> _firebase() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setDefaults({});
   await remoteConfig.fetchAndActivate();
-  // FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
+  return;
+}
 
+Future<void> _supabase() async {
   await Supabase.initialize(
     url: 'https://ihxnlxsqtrdzzopqfiwn.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloeG5seHNxdHJkenpvcHFmaXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUwNzEyMDIsImV4cCI6MjAyMDY0NzIwMn0.IIoAknwmZcuoA6t_9ubtxVPGJUHK_2DCOzNIWpdWWUQ',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloeG5seHNxdHJkenpvcHFmaXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUwNzEyMDIsImV4cCI6MjAyMDY0NzIwMn0.IIoAknwmZcuoA6t_9ubtxVPGJUHK_2DCOzNIWpdWWUQ',
   );
+
+  return;
 }

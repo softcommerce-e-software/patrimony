@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:patrimony/app/home/home_store.dart';
 import 'package:patrimony/app/home/item/item_store.dart';
-import 'package:patrimony/app/home/items/items_store.dart';
 import 'package:patrimony/domain/utils/errors.dart';
-import 'package:patrimony/entity/common_value_entity.dart';
-import 'package:patrimony/entity/company_entity.dart';
 import 'package:patrimony/entity/item_entity.dart';
 import 'package:patrimony/uikit/components/base/app_scoped_builder.dart';
-import 'package:patrimony/uikit/screens/list/simple_list_screen.dart';
 import 'package:patrimony/uikit/ui_ext.dart';
 
 class ItemPage extends StatefulWidget {
@@ -35,25 +30,6 @@ class _ItemPageState extends State<ItemPage> {
   @override
   void initState() {
     super.initState();
-    for (final String type in _store.getTypes().map((e) => e.value ?? '')) {
-      _types.add(
-        DropdownMenuEntry<String>(value: type, label: type),
-      );
-    }
-    for (final String state
-        in _store.getConservationStates().map((e) => e.value ?? '')) {
-      _conservationStates.add(
-        DropdownMenuEntry<String>(value: state, label: state),
-      );
-    }
-    for (final String company
-        in _store.getCompanies().map((e) => e.name ?? '')) {
-      _companies.add(
-        DropdownMenuEntry<String>(value: company, label: company),
-      );
-    }
-
-    _store.getItem(widget.entity);
   }
 
   @override
