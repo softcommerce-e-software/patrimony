@@ -13,9 +13,13 @@ class AppTheme {
     labelLarge: AppTextStyles.smallText10Bold,
     bodySmall: AppTextStyles.smallText12Medium,
     bodyMedium: AppTextStyles.smallText12Bold,
-    bodyLarge: AppTextStyles.regularText16Medium,
-    titleSmall: AppTextStyles.regularText16Bold,
-    titleMedium: AppTextStyles.mediumText20SemiBold,
+    bodyLarge: AppTextStyles.smallText14Medium,
+    titleSmall: AppTextStyles.regularText16Medium,
+    titleMedium: AppTextStyles.regularText16SemiBold,
+    titleLarge: AppTextStyles.regularText16Bold,
+    displaySmall: AppTextStyles.mediumText20Medium,
+    displayMedium: AppTextStyles.mediumText20SemiBold,
+    displayLarge: AppTextStyles.largeText40SemiBold,
   );
 
   ThemeData lightMode() => ThemeData(

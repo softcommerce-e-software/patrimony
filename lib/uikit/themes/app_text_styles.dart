@@ -45,6 +45,10 @@ class AppTextStyles {
     fontSize: 12.0,
   );
 
+  static TextStyle smallText14Medium = _createTextStyle(
+    fontSize: 14.0,
+  );
+
   static TextStyle regularText16 = _createTextStyle(
     fontSize: 16.0,
   );
@@ -68,5 +72,9 @@ class AppTextStyles {
   static TextStyle mediumText20SemiBold = _createTextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 20.0,
+  );
+
+  static TextStyle largeText40SemiBold = _createTextStyle(
+    fontSize: 40.0,
   );
 }
