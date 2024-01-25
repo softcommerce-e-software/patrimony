@@ -7,13 +7,21 @@ UserEntity $UserEntityFromJson(Map<String, dynamic> json) {
   if (isAdmin != null) {
     userEntity.isAdmin = isAdmin;
   }
-  final String? uid = jsonConvert.convert<String>(json['uid']);
-  if (uid != null) {
-    userEntity.uid = uid;
+  final String? id = jsonConvert.convert<String>(json['id']);
+  if (id != null) {
+    userEntity.id = id;
   }
   final String? name = jsonConvert.convert<String>(json['name']);
   if (name != null) {
     userEntity.name = name;
+  }
+  final String? email = jsonConvert.convert<String>(json['email']);
+  if (email != null) {
+    userEntity.email = email;
+  }
+  final String? photo = jsonConvert.convert<String>(json['photo']);
+  if (photo != null) {
+    userEntity.photo = photo;
   }
   return userEntity;
 }
@@ -21,7 +29,9 @@ UserEntity $UserEntityFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> $UserEntityToJson(UserEntity entity) {
   final Map<String, dynamic> data = <String, dynamic>{};
   data['isAdmin'] = entity.isAdmin;
-  data['uid'] = entity.uid;
+  data['id'] = entity.id;
   data['name'] = entity.name;
+  data['email'] = entity.email;
+  data['photo'] = entity.photo;
   return data;
 }
