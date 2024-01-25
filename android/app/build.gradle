@@ -78,6 +78,10 @@ android {
             signingConfig signingConfigs.release
             debuggable false
         }
+        debug {
+            signingConfig signingConfigs.release
+            debuggable true
+        }
     }
 }
 

@@ -21,7 +21,7 @@ dependencies:
   flutter_modular: ^6.3.2
   flutter_triple: ^3.0.0
   sign_in_with_apple: ^5.0.0
-  google_sign_in: ^6.1.5
+  google_sign_in: ^6.2.1
   dartz: ^0.10.1
   asuka: ^2.2.0
   path_provider: ^2.1.1
@@ -36,6 +36,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   path:
+  supabase_flutter: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -75,7 +75,7 @@ class _ItemsPageState extends State<ItemsPage> {
                   return SimpleListScreen(
                     onTap: (index) => _store.goToItem(_store.state[index]),
                     onTapOptions: null,
-                    labels: _store.state.map((e) => e.patrimony ?? '').toList(),
+                    labels: _store.state.map((e) => e.code ?? '').toList(),
                     icon: 'assets/icon/ic_items.webp',
                   );
                 },

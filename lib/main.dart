@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:patrimony/data/user/user_repository_impl.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
 import 'package:patrimony/entity/company_entity.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/app_module.dart';
 import 'app/app_widget.dart';
@@ -43,4 +43,9 @@ Future<void> _firebase() async {
   await remoteConfig.setDefaults({});
   await remoteConfig.fetchAndActivate();
   // FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
+
+  await Supabase.initialize(
+    url: 'https://ihxnlxsqtrdzzopqfiwn.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloeG5seHNxdHJkenpvcHFmaXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUwNzEyMDIsImV4cCI6MjAyMDY0NzIwMn0.IIoAknwmZcuoA6t_9ubtxVPGJUHK_2DCOzNIWpdWWUQ',
+  );
 }
