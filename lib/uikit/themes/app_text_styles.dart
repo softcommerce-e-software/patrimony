@@ -48,6 +48,10 @@ class AppTextStyles {
   static TextStyle smallText14Medium = _createTextStyle(
     fontSize: 14.0,
   );
+  static TextStyle smallText14Bold = _createTextStyle(
+    fontSize: 14.0,
+    fontWeight: FontWeight.bold,
+  );
 
   static TextStyle regularText16 = _createTextStyle(
     fontSize: 16.0,
