@@ -84,7 +84,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
           hintText: widget.hintText,
           hintStyle: Theme.of(context).textTheme.bodyLarge?.apply(
-                color: Theme.of(context).disabledColor.withOpacity(0.4),
+                color: Theme.of(context).disabledColor,
               ),
           focusedBorder: _defaultBorder.copyWith(
             borderSide: BorderSide(
