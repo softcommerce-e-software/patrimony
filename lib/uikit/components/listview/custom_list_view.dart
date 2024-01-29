@@ -23,6 +23,7 @@ class _CustomListViewState extends State<CustomListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      clipBehavior: Clip.hardEdge,
       padding: EdgeInsets.only(
         top: _defaultPadding,
         left: _defaultPadding,
