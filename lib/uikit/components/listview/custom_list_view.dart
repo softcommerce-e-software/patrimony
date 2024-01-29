@@ -16,6 +16,8 @@ class CustomListView extends StatefulWidget {
 }
 
 class _CustomListViewState extends State<CustomListView> {
+  SlidableController slidableController = SlidableController();
+
   final double _defaultPadding = 16.0;
 
   @override
@@ -59,27 +61,23 @@ class _CustomListViewState extends State<CustomListView> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Slidable(
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      const SizedBox(width: 8),
-                      SlidableAction(
-                        autoClose: true,
-                        onPressed: (context) {},
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        icon: Icons.edit,
-                      ),
-                      SlidableAction(
-                        autoClose: true,
-                        onPressed: (context) {},
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        icon: Icons.delete,
-                      ),
-                    ],
-                  ),
-                  child: const CustomListItem(
+                  controller: slidableController,
+                  actionPane: const SlidableScrollActionPane(),
+                  secondaryActions: [
+                    const SizedBox(width: 8),
+                    IconSlideAction(
+                      color: Theme.of(context).primaryColor,
+                      foregroundColor: Theme.of(context).colorScheme.primary,
+                      icon: Icons.edit,
+                    ),
+                    IconSlideAction(
+                      color: Theme.of(context).colorScheme.error,
+                      foregroundColor: Theme.of(context).primaryColorLight,
+                      icon: Icons.delete,
+                    ),
+                  ],
+                  child: CustomListItem(
+                    onTap: () {},
                     icon: Icons.church,
                     title: 'Titulo do card item',
                     subtitle: 'Subtitle do card',

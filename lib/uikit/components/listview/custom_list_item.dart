@@ -6,6 +6,7 @@ class CustomListItem extends StatelessWidget {
   final String sufixTitle;
   final String sufixSubtitle;
   final IconData? icon;
+  final VoidCallback? onTap;
 
   const CustomListItem({
     super.key,
@@ -13,6 +14,7 @@ class CustomListItem extends StatelessWidget {
     this.subtitle = '',
     this.sufixTitle = '',
     this.sufixSubtitle = '',
+    this.onTap,
     required this.title,
   });
 
@@ -21,6 +23,7 @@ class CustomListItem extends StatelessWidget {
     return Container(
       color: Theme.of(context).primaryColorLight,
       child: ListTile(
+        onTap: onTap,
         contentPadding: EdgeInsets.zero,
         leading: icon != null
             ? Icon(
