@@ -27,6 +27,14 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<String>(
+      menuStyle: MenuStyle(
+        surfaceTintColor: MaterialStatePropertyAll(
+          Theme.of(context).scaffoldBackgroundColor,
+        ),
+        backgroundColor: MaterialStatePropertyAll(
+          Theme.of(context).scaffoldBackgroundColor,
+        ),
+      ),
       initialSelection: widget.itens.first,
       onSelected: (String? value) {
         setState(() {
@@ -38,6 +46,10 @@ class _CustomDropDownState extends State<CustomDropDown> {
         return DropdownMenuEntry<String>(
           value: value,
           label: value,
+          style: ButtonStyle(
+            textStyle:
+                MaterialStatePropertyAll(Theme.of(context).textTheme.bodyLarge),
+          ),
         );
       }).toList(),
       expandedInsets: const EdgeInsets.all(1),
