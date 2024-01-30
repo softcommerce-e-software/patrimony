@@ -50,58 +50,67 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.padding ?? _padding,
-      child: TextFormField(
-        onChanged: (String value) {
-          if (value.length == 1) {
-            setState(() {
-              _helperText = null;
-            });
-          } else if (value.isEmpty) {
-            setState(() {
-              _helperText = widget.helperText;
-            });
-          }
-        },
-        validator: widget.validator,
-        controller: widget.controller,
-        keyboardType: widget.textInputType,
-        textInputAction: widget.textInputAction,
-        maxLength: widget.maxLength,
-        textCapitalization:
-            widget.textCapitalization ?? TextCapitalization.none,
-        inputFormatters: widget.inputFormatter,
-        style: const TextStyle(height: 1.0),
-        decoration: InputDecoration(
-          fillColor: Theme.of(context).primaryColorLight,
-          filled: true,
-          helperText: _helperText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          labelText: widget.labelText?.toUpperCase(),
-          labelStyle: Theme.of(context).textTheme.bodyLarge?.apply(
-                color: Theme.of(context).primaryColorDark,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        widget.labelText != null
+            ? Text(
+                widget.labelText!,
+                style: Theme.of(context).textTheme.bodyLarge?.apply(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+              )
+            : const SizedBox(),
+        Padding(
+          padding: widget.padding ?? _padding,
+          child: TextFormField(
+            onChanged: (String value) {
+              if (value.length == 1) {
+                setState(() {
+                  _helperText = null;
+                });
+              } else if (value.isEmpty) {
+                setState(() {
+                  _helperText = widget.helperText;
+                });
+              }
+            },
+            validator: widget.validator,
+            controller: widget.controller,
+            keyboardType: widget.textInputType,
+            textInputAction: widget.textInputAction,
+            maxLength: widget.maxLength,
+            textCapitalization:
+                widget.textCapitalization ?? TextCapitalization.none,
+            inputFormatters: widget.inputFormatter,
+            style: const TextStyle(height: 1.0),
+            decoration: InputDecoration(
+              fillColor: Theme.of(context).primaryColorLight,
+              filled: true,
+              helperText: _helperText,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: widget.hintText,
+              hintStyle: Theme.of(context).textTheme.bodyLarge?.apply(
+                    color: Theme.of(context).disabledColor,
+                  ),
+              focusedBorder: _defaultBorder.copyWith(
+                borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
-          hintText: widget.hintText,
-          hintStyle: Theme.of(context).textTheme.bodyLarge?.apply(
-                color: Theme.of(context).disabledColor,
+              enabledBorder: _defaultBorder.copyWith(
+                borderSide: BorderSide(
+                  color: Theme.of(context).disabledColor.withOpacity(0.4),
+                ),
               ),
-          focusedBorder: _defaultBorder.copyWith(
-            borderSide: BorderSide(
-              color: Theme.of(context).primaryColor,
+              border: _defaultBorder,
+              errorBorder: _defaultBorder,
+              focusedErrorBorder: _defaultBorder,
+              disabledBorder: _defaultBorder,
             ),
           ),
-          enabledBorder: _defaultBorder.copyWith(
-            borderSide: BorderSide(
-              color: Theme.of(context).disabledColor.withOpacity(0.4),
-            ),
-          ),
-          border: _defaultBorder,
-          errorBorder: _defaultBorder,
-          focusedErrorBorder: _defaultBorder,
-          disabledBorder: _defaultBorder,
         ),
-      ),
+      ],
     );
   }
 }

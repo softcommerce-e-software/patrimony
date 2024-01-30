@@ -21,7 +21,11 @@ class CustomModal extends StatelessWidget {
               color: Theme.of(context).primaryColorDark.withOpacity(.50),
             ),
           ),
-          Center(child: child),
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(16),
+            child: child,
+          ),
         ],
       ),
     );
