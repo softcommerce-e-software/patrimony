@@ -23,12 +23,14 @@ class _CustomIconInputState extends State<CustomIconInput> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          widget.labelText!,
-          style: Theme.of(context).textTheme.bodyLarge?.apply(
-                color: Theme.of(context).primaryColorDark,
-              ),
-        ),
+        widget.labelText != null
+            ? Text(
+                widget.labelText!,
+                style: Theme.of(context).textTheme.bodyLarge?.apply(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+              )
+            : const SizedBox(),
         GestureDetector(
           onTap: widget.onTap,
           child: Padding(
