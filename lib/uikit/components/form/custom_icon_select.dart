@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patrimony/uikit/components/buttons/custom_icon_button.dart';
+import 'package:patrimony/uikit/components/form/controller/custom_icon_select_controller.dart';
 import 'package:patrimony/uikit/components/gridview/custom_grid_icon_item.dart';
 import 'package:patrimony/uikit/mockup/icons_list.dart';
 
@@ -42,7 +43,9 @@ class _CustomIconSelectState extends State<CustomIconSelect> {
                   CustomIconButton(
                     icon: Icons.close,
                     iconColor: Theme.of(context).primaryColorDark,
-                    onPressed: widget.closePressed,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   )
                 ],
               ),
@@ -57,11 +60,16 @@ class _CustomIconSelectState extends State<CustomIconSelect> {
                     if (index < IconsList.flutterIcons.length) {
                       return GridTile(
                         child: CustomGridIconItem(
-                          onTap: () {},
+                          onTap: () {
+                            CustomIconSelectController.instance
+                                .changeIcon(index);
+                            Navigator.pop(context);
+                          },
                           icon: IconsList.flutterIcons[index],
                         ),
                       );
                     }
+                    return null;
                   },
                 ),
               ),

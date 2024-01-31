@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:patrimony/uikit/components/form/controller/custom_icon_select_controller.dart';
 
-class CustomIconInput extends StatefulWidget {
+class CustomIconInput extends StatelessWidget {
   final String? labelText;
   final EdgeInsets? padding;
   final bool? iconOptions;
@@ -15,29 +16,24 @@ class CustomIconInput extends StatefulWidget {
   });
 
   @override
-  State<CustomIconInput> createState() => _CustomIconInputState();
-}
-
-class _CustomIconInputState extends State<CustomIconInput> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widget.labelText != null
+        labelText != null
             ? Text(
-                widget.labelText!,
+                labelText!,
                 style: Theme.of(context).textTheme.bodyLarge?.apply(
                       color: Theme.of(context).primaryColorDark,
                     ),
               )
             : const SizedBox(),
         GestureDetector(
-          onTap: widget.onTap,
+          onTap: onTap,
           child: Padding(
-            padding: widget.padding ?? const EdgeInsets.only(bottom: 16),
+            padding: padding ?? const EdgeInsets.only(bottom: 16),
             child: Container(
-              width: 52,
-              height: 52,
+              width: 55,
+              height: 55,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColorLight,
                 border: Border.all(
@@ -46,7 +42,7 @@ class _CustomIconInputState extends State<CustomIconInput> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
-                Icons.house,
+                CustomIconSelectController.instance.icon,
                 size: 32,
                 color: Theme.of(context).primaryColorDark,
               ),

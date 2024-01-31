@@ -57,7 +57,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
               label: value,
               style: ButtonStyle(
                 textStyle: MaterialStatePropertyAll(
-                    Theme.of(context).textTheme.bodyLarge),
+                  Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
             );
           }).toList(),
