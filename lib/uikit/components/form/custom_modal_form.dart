@@ -3,15 +3,20 @@ import 'package:patrimony/uikit/components/buttons/custom_button.dart';
 import 'package:patrimony/uikit/components/inputs/custom_icon_input.dart';
 import 'package:patrimony/uikit/components/form/custom_icon_select.dart';
 import 'package:patrimony/uikit/components/inputs/custom_text_field.dart';
+import 'package:patrimony/uikit/mockup/icons_list.dart';
 
 class CustomModalForm extends StatefulWidget {
-  const CustomModalForm({super.key});
+  final void Function(String, IconData) callback;
+
+  const CustomModalForm({super.key, required this.callback});
 
   @override
   State<CustomModalForm> createState() => _CustomModalFormState();
 }
 
 class _CustomModalFormState extends State<CustomModalForm> {
+  IconData _icon = IconsList.flutterIcons[0];
+
   final _defaultBorder = BorderRadius.circular(8);
 
   @override
@@ -44,17 +49,22 @@ class _CustomModalFormState extends State<CustomModalForm> {
                     Expanded(
                       child: CustomIconInput(
                         labelText: 'Icone',
-                        onTap: () {
-                          setState(() {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const Dialog(
-                                  child: CustomIconSelect(),
-                                );
-                              },
-                            );
-                          });
+                        icon: _icon,
+                        onTap: () async {
+                          var response = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Dialog(
+                                child: CustomIconSelect(),
+                              );
+                            },
+                          );
+
+                          if (response != null) {
+                            setState(() {
+                              _icon = response;
+                            });
+                          }
                         },
                       ),
                     )
@@ -77,6 +87,10 @@ class _CustomModalFormState extends State<CustomModalForm> {
                         background: Theme.of(context).primaryColor,
                         buttonText: 'Confirmar',
                         textColor: Theme.of(context).primaryColorLight,
+                        onPressed: () {
+                          widget.callback.call('sad', _icon);
+                          Navigator.pop(context);
+                        },
                       ),
                     )
                   ],

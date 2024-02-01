@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:patrimony/uikit/components/form/controller/custom_icon_select_controller.dart';
 
 class CustomIconInput extends StatelessWidget {
+  final IconData icon;
   final String? labelText;
   final EdgeInsets? padding;
   final bool? iconOptions;
@@ -13,6 +13,7 @@ class CustomIconInput extends StatelessWidget {
     this.labelText,
     this.iconOptions,
     this.onTap,
+    required this.icon,
   });
 
   @override
@@ -42,7 +43,7 @@ class CustomIconInput extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
-                CustomIconSelectController.instance.icon,
+                icon,
                 size: 32,
                 color: Theme.of(context).primaryColorDark,
               ),

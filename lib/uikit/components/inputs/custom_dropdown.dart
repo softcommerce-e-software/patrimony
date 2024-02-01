@@ -30,7 +30,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.labelText!,
+          widget.labelText,
           style: Theme.of(context).textTheme.bodyLarge?.apply(
                 color: Theme.of(context).primaryColorDark,
               ),

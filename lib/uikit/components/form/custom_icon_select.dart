@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:patrimony/uikit/components/buttons/custom_icon_button.dart';
-import 'package:patrimony/uikit/components/form/controller/custom_icon_select_controller.dart';
 import 'package:patrimony/uikit/components/gridview/custom_grid_icon_item.dart';
 import 'package:patrimony/uikit/mockup/icons_list.dart';
 
@@ -61,9 +60,10 @@ class _CustomIconSelectState extends State<CustomIconSelect> {
                       return GridTile(
                         child: CustomGridIconItem(
                           onTap: () {
-                            CustomIconSelectController.instance
-                                .changeIcon(index);
-                            Navigator.pop(context);
+                            Navigator.pop(
+                              context,
+                              IconsList.flutterIcons[index],
+                            );
                           },
                           icon: IconsList.flutterIcons[index],
                         ),
