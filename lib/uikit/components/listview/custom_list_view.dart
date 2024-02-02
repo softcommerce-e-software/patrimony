@@ -5,10 +5,12 @@ import 'package:patrimony/uikit/components/listview/custom_list_view_header.dart
 
 class CustomListView extends StatefulWidget {
   final int itemCount;
+  final CustomListItem child;
 
   const CustomListView({
     super.key,
     required this.itemCount,
+    required this.child,
   });
 
   @override
@@ -63,7 +65,7 @@ class _CustomListViewState extends State<CustomListView> {
               itemBuilder: (context, index) {
                 return Slidable(
                   controller: slidableController,
-                  actionPane: const SlidableScrollActionPane(),
+                  actionPane: const SlidableStrechActionPane(),
                   secondaryActions: [
                     const SizedBox(width: 8),
                     IconSlideAction(
@@ -77,13 +79,7 @@ class _CustomListViewState extends State<CustomListView> {
                       icon: Icons.delete,
                     ),
                   ],
-                  child: CustomListItem(
-                    onTap: () {},
-                    icon: Icons.church,
-                    title: 'Titulo do card item',
-                    subtitle: 'Subtitle do card',
-                    sufixTitle: 'Sufix title',
-                  ),
+                  child: widget.child,
                 );
               },
             ),
