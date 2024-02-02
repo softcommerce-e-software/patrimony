@@ -13,9 +13,14 @@ class AppTheme {
     labelLarge: AppTextStyles.smallText10Bold,
     bodySmall: AppTextStyles.smallText12Medium,
     bodyMedium: AppTextStyles.smallText12Bold,
-    bodyLarge: AppTextStyles.regularText16Medium,
-    titleSmall: AppTextStyles.regularText16Bold,
-    titleMedium: AppTextStyles.mediumText20SemiBold,
+    bodyLarge: AppTextStyles.smallText14Medium,
+    titleSmall: AppTextStyles.smallText14Bold,
+    titleMedium: AppTextStyles.regularText16Medium,
+    titleLarge: AppTextStyles.regularText16SemiBold,
+    displaySmall: AppTextStyles.regularText16Bold,
+    displayMedium: AppTextStyles.mediumText20Medium,
+    displayLarge: AppTextStyles.mediumText20SemiBold,
+    headlineSmall: AppTextStyles.largeText40SemiBold,
   );
 
   ThemeData lightMode() => ThemeData(
@@ -25,14 +30,17 @@ class AppTheme {
         scaffoldBackgroundColor: AppColors.neutral_100,
         primaryColorLight: AppColors.neutral_50,
         primaryColorDark: AppColors.neutral_900,
-        disabledColor: AppColors.neutral_500,
+        dividerColor: AppColors.neutral_300,
+        disabledColor: AppColors.neutral_400,
+        shadowColor: AppColors.neutral_900.withOpacity(0.25),
         colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: AppColors.neutral_100,
-              secondary: AppColors.neutral_900,
+              primary: AppColors.neutral_200,
+              secondary: AppColors.neutral_800,
               tertiary: AppColors.blue,
               surface: AppColors.green,
               error: AppColors.red,
               onBackground: AppColors.neutral_700,
+              onPrimary: AppColors.neutral_500,
             ),
         textTheme: _textTheme,
       );
@@ -44,7 +52,8 @@ class AppTheme {
         scaffoldBackgroundColor: AppColors.neutral_900,
         primaryColorLight: AppColors.neutral_50,
         primaryColorDark: AppColors.neutral_900,
-        disabledColor: AppColors.neutral_500,
+        dividerColor: AppColors.neutral_300,
+        disabledColor: AppColors.neutral_400,
         colorScheme: Theme.of(context).colorScheme.copyWith(
               primary: AppColors.neutral_900,
               secondary: AppColors.neutral_100,
@@ -52,6 +61,7 @@ class AppTheme {
               surface: AppColors.green,
               error: AppColors.red,
               onBackground: AppColors.neutral_700,
+              onPrimary: AppColors.neutral_500,
             ),
         textTheme: _textTheme,
       );
