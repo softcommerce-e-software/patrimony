@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:patrimony/uikit/components/buttons/custom_button.dart';
 import 'package:patrimony/uikit/components/inputs/custom_icon_input.dart';
-import 'package:patrimony/uikit/components/form/custom_icon_select.dart';
 import 'package:patrimony/uikit/components/inputs/custom_text_field.dart';
+import 'package:patrimony/uikit/components/modal/custom_icon_select.dart';
 import 'package:patrimony/uikit/mockup/icons_list.dart';
 
 class CustomModalForm extends StatefulWidget {
