@@ -3,13 +3,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:patrimony/app/login/login_store.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/uikit/components/base/app_scoped_builder.dart';
-import 'package:patrimony/uikit/components/buttons/apple_button.dart';
+import 'package:patrimony/uikit/components/buttons/custom_image_button.dart';
 import 'package:patrimony/uikit/ui_ext.dart';
 
-import '../../../uikit/components/buttons/google_button.dart';
-
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   createState() => _LoginPageState();
@@ -54,28 +52,41 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'PATRIMÔNIO',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+            'PATRIMÔNIO'.toUpperCase(),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
           ),
           Text(
             'BEM-VINDO',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.black,
-            ),
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                  color: Colors.black,
+                ),
           ),
           SizedBox(
             height: 10.heightPercent,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.widthPercent),
-            child: appleButton(onPress: () => _store.login()),
+            child: CustomImageButton(
+              onPressed: () => _store.login(),
+              background: Theme.of(context).primaryColorDark,
+              textColor: Theme.of(context).primaryColorLight,
+              iconPath: 'assets/icon/ic_white_apple.webp',
+              buttonText: 'Sign in with Apple',
+            ),
           ),
+          const SizedBox(height: 12),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.widthPercent),
-            child: googleButton(onPress: () => _store.login(isGoogle: true)),
+            child: CustomImageButton(
+              onPressed: () => _store.login(isGoogle: true),
+              background: Theme.of(context).colorScheme.primary,
+              textColor: Theme.of(context).primaryColorDark,
+              iconPath: 'assets/icon/ic_google.webp',
+              buttonText: 'Sign in with Google',
+            ),
           ),
         ],
       ),

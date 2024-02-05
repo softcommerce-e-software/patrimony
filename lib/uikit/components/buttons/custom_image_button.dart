@@ -6,7 +6,6 @@ class CustomImageButton extends StatelessWidget {
   final Color? textColor;
   final bool isDisable;
   final String buttonText;
-  final BuildContext context;
   final String iconPath;
 
   const CustomImageButton({
@@ -14,7 +13,6 @@ class CustomImageButton extends StatelessWidget {
     this.isDisable = false,
     this.textColor,
     this.onPressed,
-    required this.context,
     required this.iconPath,
     required this.background,
     required this.buttonText,
@@ -55,7 +53,7 @@ class CustomImageButton extends StatelessWidget {
             const SizedBox(width: 12.0),
             Text(
               buttonText.toUpperCase(),
-              style: Theme.of(context).textTheme.titleSmall?.apply(
+              style: Theme.of(context).textTheme.bodyLarge?.apply(
                     color: textColor,
                   ),
             ),
