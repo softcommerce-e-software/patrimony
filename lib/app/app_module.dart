@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:patrimony/app/bottom_view/bottom_view_module.dart';
@@ -15,8 +16,7 @@ class AppModule extends Module {
 
   @override
   void exportedBinds(Injector i) {
-    i.addInstance(Supabase.instance.client);
-    i.addInstance(Supabase.instance.client.auth);
+    i.addInstance(FirebaseAuth.instance);
     i.addInstance(FirebaseRemoteConfig.instance);
     i.addLazySingleton<UserRepository>(UserRepositoryImpl.new);
     i.addLazySingleton<UserDataSource>(UserDataSourceImpl.new);

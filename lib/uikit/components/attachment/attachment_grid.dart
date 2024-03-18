@@ -1,16 +1,31 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:patrimony/uikit/components/attachment/custom_attachment_image.dart';
 
+class AttachmentEntity {
+  String id;
+  String url;
+
+  AttachmentEntity(this.id, this.url);
+}
+
 class AttachmentGrid extends StatefulWidget {
-  const AttachmentGrid({super.key});
+  final VoidCallback? onAdd;
+  final Function(AttachmentEntity value)? onDelete;
+  final List<AttachmentEntity> items;
+  const AttachmentGrid({
+    super.key,
+    this.onDelete,
+    required this.items,
+    this.onAdd
+  });
 
   @override
   State<AttachmentGrid> createState() => _AttachmentGridState();
 }
 
 class _AttachmentGridState extends State<AttachmentGrid> {
-  final List<String> _attachments = [];
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +41,8 @@ class _AttachmentGridState extends State<AttachmentGrid> {
                   ),
             ),
             const Spacer(),
-            GestureDetector(
-              onTap: () {
-                addAttachment();
-              },
+            InkWell(
+              onTap: widget.items.length < 3 ? widget.onAdd : null,
               child: Text(
                 'adicionar',
                 style: Theme.of(context).textTheme.bodyMedium?.apply(
@@ -39,22 +52,18 @@ class _AttachmentGridState extends State<AttachmentGrid> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         SizedBox(
           height: 162,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            itemCount: _attachments.length,
+            itemCount: widget.items.length,
             itemBuilder: (context, index) {
               return CustomAttachmentImage(
                 name: 'Anexo ${index + 1}',
-                image: _attachments[index],
-                onTap: () {
-                  setState(() {
-                    _attachments.removeAt(index);
-                  });
-                },
+                image: widget.items[index].url,
+                onTap: () => widget.onDelete?.call(widget.items[index]),
               );
             },
           ),
@@ -62,24 +71,18 @@ class _AttachmentGridState extends State<AttachmentGrid> {
       ],
     );
   }
+}
 
-  addAttachment() async {
-    final ImagePicker picker = ImagePicker();
-
-    try {
-      XFile? file = await picker.pickImage(source: ImageSource.gallery);
-      if (file != null &&
-          _attachments.length < 3 &&
-          _attachments
-              .singleWhere((element) => element.split('/').last == file.name,
-                  orElse: () => '')
-              .isEmpty) {
-        setState(() {
-          _attachments.add(file.path);
-        });
-      }
-    } catch (e) {
-      throw Error();
+Future<File?> addAttachment() async {
+  final ImagePicker picker = ImagePicker();
+  try {
+    XFile? file = await picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      return File(file.path);
+    } else {
+      return null;
     }
+  } catch (e) {
+    throw Error();
   }
 }

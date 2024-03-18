@@ -33,6 +33,7 @@ class AppTheme {
         dividerColor: AppColors.neutral_300,
         disabledColor: AppColors.neutral_400,
         shadowColor: AppColors.neutral_900.withOpacity(0.25),
+        hintColor: AppColors.neutral_500,
         colorScheme: Theme.of(context).colorScheme.copyWith(
               primary: AppColors.neutral_200,
               secondary: AppColors.neutral_800,

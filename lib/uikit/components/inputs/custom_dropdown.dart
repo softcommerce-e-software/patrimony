@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class CustomDropDown extends StatefulWidget {
-  final List<String> itens;
+  final String? value;
+  final List<String> items;
   final String labelText;
   final String hintText;
-  String? value;
+  final bool enabled;
+  final Function(String? value) onSelected;
 
-  CustomDropDown({
+  const CustomDropDown({
     super.key,
-    required this.value,
     required this.labelText,
     required this.hintText,
-    required this.itens,
+    required this.items, required this.onSelected, this.value,
+    this.enabled = true,
   });
 
   @override
@@ -44,14 +45,11 @@ class _CustomDropDownState extends State<CustomDropDown> {
               Theme.of(context).scaffoldBackgroundColor,
             ),
           ),
-          initialSelection: widget.itens.first,
-          onSelected: (String? value) {
-            setState(() {
-              widget.value = value!;
-            });
-          },
+          enabled: widget.enabled,
+          initialSelection: widget.value,
+          onSelected: (String? value) => widget.onSelected(value),
           dropdownMenuEntries:
-              widget.itens.map<DropdownMenuEntry<String>>((String value) {
+              widget.items.map<DropdownMenuEntry<String>>((String value) {
             return DropdownMenuEntry<String>(
               value: value,
               label: value,

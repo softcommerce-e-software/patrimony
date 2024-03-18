@@ -36,14 +36,4 @@ class UserRepositoryImpl implements UserRepository {
       return Left(InvalidUser());
     }
   }
-
-  @override
-  Future<Either<Failure, bool>> isAdmin() async {
-    try {
-      var response = await _dataSource.isAdmin();
-      return Right(response);
-    } catch (_) {
-      return Left(InvalidUser());
-    }
-  }
 }

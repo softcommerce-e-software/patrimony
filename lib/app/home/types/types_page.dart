@@ -4,11 +4,15 @@ import 'package:patrimony/app/home/types/types_store.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
 import 'package:patrimony/entity/company_entity.dart';
+import 'package:patrimony/uikit/components/appBar/custom_dynamic_app_bar.dart';
 import 'package:patrimony/uikit/components/base/app_scoped_builder.dart';
-import 'package:patrimony/uikit/screens/list/simple_list_screen.dart';
+import 'package:patrimony/uikit/components/listview/custom_list_item.dart';
+
+import '../../../uikit/components/listview/custom_list_view.dart';
 
 class TypesPage extends StatefulWidget {
-  const TypesPage({super.key});
+  const TypesPage({super.key, required this.companyEntity});
+  final CompanyEntity companyEntity;
 
   @override
   State<TypesPage> createState() => _TypesPageState();
@@ -20,37 +24,61 @@ class _TypesPageState extends State<TypesPage> {
   @override
   void initState() {
     super.initState();
-    _store.getTypes();
+    _store.getPage(widget.companyEntity.id ?? "");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tipos'),
+      appBar: CustomDynamicAppBar(
+        title: widget.companyEntity.name ?? "",
+        actionTap: () => print('oio'),
       ),
-      body: _screen(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget _screen() {
-    return SafeArea(
-      child: AppScopedBuilder<TypesStore, Failure, List<CommonValueEntity>>(
-        store: _store,
-        onState: (_, result) {
-          return SimpleListScreen(
-            onTap: (index) => _store.goToItem(_store.state[index]),
-            onTapOptions:(index) => _store.goToOptions(_store.state[index]),
-            labels: _store.state.map((e) => e.value ?? '').toList(),
-            icon: 'assets/icon/ic_menu.webp',
-          );
-        },
-        onError: (_, e) => const Center(
-          child: Text('Ocorreu um erro, tente novamente mais tarde'),
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () => _store.getPage(widget.companyEntity.id ?? ""),
+          child: AppScopedBuilder<TypesStore, Failure, TypesPageEntity>(
+            store: _store,
+            onState: (_, result) {
+              return ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 32.0
+                    ),
+                    child: CustomListView(
+                        itemCount: _store.state.types.length,
+                        title: 'Categorias',
+                        icon: Icons.category,
+                        child: (index) => CustomListItem(
+                          title: _store.state.types[index].name ?? "",
+                          onTap: () => _store.goToItems(
+                              widget.companyEntity,
+                              _store.state.types[index]
+                          ),
+                        )
+                    ),
+                  ),
+                   Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomListView(
+                        itemCount: _store.state.users.length,
+                        title: 'Usuários',
+                        icon: Icons.supervised_user_circle,
+                        child: (index) => CustomListItem(
+                          title: _store.state.users[index].name ?? "",
+                          subtitle: _store.state.users[index].email ?? "",
+                        )
+                    ),
+                  ),
+                ],
+              );
+            },
+            onError: (_, e) => const Center(
+              child: Text('Ocorreu um erro, tente novamente mais tarde'),
+            ),
+          ),
         ),
       ),
     );

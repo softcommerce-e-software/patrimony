@@ -1,9 +1,15 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:patrimony/app/home/item/item_store.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/entity/item_entity.dart';
+import 'package:patrimony/uikit/components/appBar/custom_dynamic_app_bar.dart';
+import 'package:patrimony/uikit/components/attachment/attachment_grid.dart';
 import 'package:patrimony/uikit/components/base/app_scoped_builder.dart';
+import 'package:patrimony/uikit/components/buttons/custom_button.dart';
+import 'package:patrimony/uikit/components/inputs/custom_dropdown.dart';
+import 'package:patrimony/uikit/components/inputs/custom_message_field.dart';
 import 'package:patrimony/uikit/ui_ext.dart';
 
 class ItemPage extends StatefulWidget {
@@ -17,26 +23,28 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   final ItemStore _store = Modular.get();
-  final TextEditingController _typeController = TextEditingController();
-  final TextEditingController _companyController = TextEditingController();
-  final TextEditingController _conservationStateController =
-      TextEditingController();
-  final List<DropdownMenuEntry<String>> _types = <DropdownMenuEntry<String>>[];
-  final List<DropdownMenuEntry<String>> _companies =
-      <DropdownMenuEntry<String>>[];
-  final List<DropdownMenuEntry<String>> _conservationStates =
-      <DropdownMenuEntry<String>>[];
+  final TextEditingController _barcodeController = TextEditingController();
+  final TextEditingController _valueController = TextEditingController();
+  final TextEditingController _observationsController = TextEditingController();
+  final TextEditingController _statusController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _barcodeController.text = widget.entity.code ?? "";
+    _valueController.text = widget.entity.value?.toString() ?? "";
+    _observationsController.text = widget.entity.code ?? "";
+    _statusController.text = widget.entity.status ?? "";
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.entity.code ?? ''),
+      appBar: CustomDynamicAppBar(
+        title: widget.entity.code ?? "",
+        hasMenu: false,
+        actionTap: () => print('oio'),
       ),
       body: _screen(),
     );
@@ -44,41 +52,83 @@ class _ItemPageState extends State<ItemPage> {
 
   Widget _screen() {
     return SafeArea(
-      child: AppScopedBuilder<ItemStore, Failure, ItemEntity>(
-        store: _store,
-        onState: (_, result) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _inputText('Código de barras:', widget.entity.code ?? ''),
-                _inputText('Patrimônio:', widget.entity.code ?? ''),
-                _inputText('Local de registro:',
-                    widget.entity.registrationLocation ?? ''),
-                _dropDown('Local atual:', widget.entity.nowLocation ?? '',
-                    _companyController, _companies, (String? value) {}),
-                _dropDown(
-                    'Estado de conservação:',
-                    widget.entity.conservationState ?? '',
-                    _conservationStateController,
-                    _conservationStates,
-                    (String? value) {}),
-                _dropDown('Tipo:', widget.entity.type ?? '', _typeController,
-                    _types, (String? value) {}),
-                InteractiveViewer(
-                  panEnabled: false,
-                  minScale: 1,
-                  maxScale: 3,
-                  child: Image.network(
-                      height: 30.heightPercent, widget.entity.invoice ?? ''),
-                ),
-              ],
+      child: Flex(
+        direction: Axis.vertical,
+        children: [
+          Expanded(
+            child: ListView(
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+                children: [
+                  CustomMessageField(
+                    controller: _barcodeController,
+                    labelText: 'Código de barras',
+                    textInputType: TextInputType.number,
+                    hintText: '',
+                    enabled: false,
+                    padding: const EdgeInsets.only(bottom: 16.0),
+
+                  ),
+                  CustomMessageField(
+                    controller: _valueController,
+                    labelText: 'Valor',
+                    enabled: false,
+                    inputFormatter: [
+                      CurrencyTextInputFormatter(
+                          decimalDigits: 2,
+                          locale: 'pt_BR',
+                          symbol: 'R\$'
+                      ),
+                    ],
+                    hintText: '',
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: CustomDropDown(
+                      value: _statusController.text,
+                      labelText: 'Estado atual',
+                      enabled: false,
+                      hintText: 'Na propriedade',
+                      items: ['Na propriedade', 'Fora da propriedade'],
+                      onSelected: (String? value) => {
+                        _statusController.text = value ?? ""
+                      },
+                    ),
+                  ),
+                  CustomMessageField(
+                    controller: _observationsController,
+                    labelText: 'Observações',
+                    hintText: '',
+                    enabled: false,
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: AttachmentGrid(
+                      items: widget.entity.attachments?.map((e) =>  AttachmentEntity("", e)).toList() ?? [],
+                      onDelete: (item) => {},
+                      onAdd: () {},
+                    ),
+                  ),
+                ]
             ),
-          );
-        },
-        onError: (_, e) => const Center(
-          child: Text('Ocorreu um erro, tente novamente mais tarde'),
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 16.0
+            ),
+            child: CustomButton(
+                context: context,
+                background: Theme.of(context).primaryColor,
+                textColor: Theme.of(context).primaryColorLight,
+                buttonText: 'Salvar',
+                onPressed: () {},
+                isDisable: true
+            ),
+          )
+        ],
       ),
     );
   }

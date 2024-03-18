@@ -1,38 +1,36 @@
-import 'package:patrimony/generated/json/base/json_field.dart';
-import 'package:patrimony/generated/json/common_value_entity.g.dart';
 import 'dart:convert';
 
-@JsonSerializable()
+List<CommonValueEntity> listCommonValueEntityFromJson(String str) => List<CommonValueEntity>
+    .from(json.decode(str).map((model)=> CommonValueEntity.fromJson(model)));
+CommonValueEntity commonValueEntityFromJson(String str) => CommonValueEntity.fromJson(json.decode(str));
+String commonValueEntityToJson(CommonValueEntity data) => json.encode(data.toJson());
 class CommonValueEntity {
-  String? id;
-  String? value;
+  CommonValueEntity({
+      String? id, 
+      String? name,}){
+    _id = id;
+    _name = name;
+}
 
-  CommonValueEntity();
+  CommonValueEntity.fromJson(dynamic json) {
+    _id = json['id'];
+    _name = json['name'];
+  }
+  String? _id;
+  String? _name;
+CommonValueEntity copyWith({  String? id,
+  String? name,
+}) => CommonValueEntity(  id: id ?? _id,
+  name: name ?? _name,
+);
+  String? get id => _id;
+  String? get name => _name;
 
-  factory CommonValueEntity.fromJson(Map<String, dynamic> json) =>
-      $CommonValueEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => $CommonValueEntityToJson(this);
-
-  CommonValueEntity copyWith({String? value}) {
-    return CommonValueEntity()
-      ..id = id ?? this.id
-      ..value = value ?? this.value;
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['name'] = _name;
+    return map;
   }
 
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CommonValueEntity &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          value == other.value;
-
-  @override
-  int get hashCode => id.hashCode ^ value.hashCode;
 }

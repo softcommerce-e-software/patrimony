@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -8,13 +6,17 @@ import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
 import 'package:patrimony/entity/company_entity.dart';
 import 'package:patrimony/entity/item_entity.dart';
+import 'package:patrimony/uikit/components/appBar/custom_dynamic_app_bar.dart';
 import 'package:patrimony/uikit/components/base/app_scoped_builder.dart';
+import 'package:patrimony/uikit/components/listview/custom_list_item.dart';
+import 'package:patrimony/uikit/components/listview/custom_list_view.dart';
 import 'package:patrimony/uikit/screens/list/simple_list_screen.dart';
 import 'package:patrimony/uikit/ui_ext.dart';
 
 class ItemsPage extends StatefulWidget {
-  final CompanyEntity entity;
-  const ItemsPage({super.key, required this.entity});
+  final CompanyEntity companyEntity;
+  final CommonValueEntity categoryEntity;
+  const ItemsPage({super.key, required this.companyEntity, required this.categoryEntity});
 
   @override
   State<ItemsPage> createState() => _ItemsPageState();
@@ -26,19 +28,48 @@ class _ItemsPageState extends State<ItemsPage> {
   @override
   void initState() {
     super.initState();
-    _store.setCompany(widget.entity);
+    _store.getItems(widget.companyEntity.id ?? "", widget.categoryEntity.id ?? "");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Itens'),
+      appBar: CustomDynamicAppBar(
+        title: widget.categoryEntity.name ?? "",
+        actionTap: () => print('oio'),
       ),
-      body: _screen(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
-        child: const Icon(Icons.add),
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () async {},
+          child: AppScopedBuilder<ItemsStore, Failure, List<ItemEntity>>(
+            store: _store,
+            onState: (_, result) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 32.0
+                ),
+                child: CustomListView(
+                    itemCount: _store.state.length,
+                    title: 'Itens',
+                    icon: Icons.format_list_bulleted,
+                    onAdd: () => _store.goToAddItem(
+                      widget.companyEntity.id!,
+                      widget.categoryEntity.id!
+                    ),
+                    child: (index) => CustomListItem(
+                      title: _store.state[index].code ?? "",
+                      subtitle: _store.state[index].status ?? "12",
+                      onTap: () => _store.goToItem(_store.state[index]),
+                    )
+                ),
+              );
+            },
+            onError: (_, e) => const Center(
+              child: Text('Ocorreu um erro, tente novamente mais tarde'),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -97,7 +128,7 @@ class _ItemsPageState extends State<ItemsPage> {
         for (final barcode in barcodes) {
           var value = barcode.rawValue;
           if(value?.trim() != '' ) {
-            _store.searchItem(value!);
+            // _store.searchItem(value!);
           }
         }
       },

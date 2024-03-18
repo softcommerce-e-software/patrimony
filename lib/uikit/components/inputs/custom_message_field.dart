@@ -8,11 +8,15 @@ class CustomMessageField extends StatefulWidget {
   final TextInputType? textInputType;
   final List<TextInputFormatter>? inputFormatter;
   final int? maxLength;
+  final int? minLines;
+  final int? maxLines;
   final String? helperText;
   final String? hintText;
   final String? labelText;
   final EdgeInsets? padding;
+  final bool enabled;
   final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onChanged;
 
   const CustomMessageField({
     super.key,
@@ -24,9 +28,10 @@ class CustomMessageField extends StatefulWidget {
     this.maxLength,
     this.helperText,
     this.hintText,
+    this.minLines,
     this.labelText,
     this.validator,
-    this.padding,
+    this.padding, this.maxLines, this.onChanged, this.enabled = true,
   });
 
   @override
@@ -37,8 +42,6 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
   final _defaultBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8.0),
   );
-
-  final _padding = const EdgeInsets.only(bottom: 16.0);
 
   String? _helperText;
 
@@ -62,7 +65,7 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
               )
             : const SizedBox(),
         Padding(
-          padding: widget.padding ?? _padding,
+          padding: widget.padding ?? const EdgeInsets.all(0),
           child: TextFormField(
             onChanged: (String value) {
               if (value.length == 1) {
@@ -74,7 +77,9 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
                   _helperText = widget.helperText;
                 });
               }
+              widget.onChanged?.call(value);
             },
+            enabled: widget.enabled,
             validator: widget.validator,
             controller: widget.controller,
             keyboardType: widget.textInputType,
@@ -84,7 +89,8 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
                 widget.textCapitalization ?? TextCapitalization.none,
             inputFormatters: widget.inputFormatter,
             style: const TextStyle(height: 1.0),
-            maxLines: 4,
+            minLines: widget.minLines,
+            maxLines: widget.maxLines,
             decoration: InputDecoration(
               fillColor: Theme.of(context).primaryColorLight,
               filled: true,

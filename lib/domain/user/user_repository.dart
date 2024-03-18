@@ -5,5 +5,4 @@ abstract class UserRepository {
   Future<Either<Failure, bool>> login(String provider);
   Future<Either<Failure, bool>> logout();
   Future<Either<Failure, bool>> isLoggedUser();
-  Future<Either<Failure, bool>> isAdmin();
 }

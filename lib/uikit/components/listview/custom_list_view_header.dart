@@ -4,12 +4,13 @@ class CustomListViewHeader extends StatelessWidget {
   final bool? prefixIcon;
   final IconData? icon;
   final String title;
+  final GestureTapCallback? onTap;
 
   const CustomListViewHeader({
     super.key,
     this.prefixIcon = false,
     this.icon,
-    required this.title,
+    required this.title, this.onTap,
   });
 
   @override
@@ -36,11 +37,14 @@ class CustomListViewHeader extends StatelessWidget {
               ),
         ),
         const Spacer(),
-        Text(
-          'Adicionar',
-          style: Theme.of(context).textTheme.bodyMedium?.apply(
-                color: Theme.of(context).primaryColorDark,
-              ),
+        InkWell(
+          onTap: onTap,
+          child: Text(
+            'Adicionar',
+            style: Theme.of(context).textTheme.bodyMedium?.apply(
+                  color: Theme.of(context).primaryColorDark,
+                ),
+          ),
         ),
       ],
     );

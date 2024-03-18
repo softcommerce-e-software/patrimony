@@ -21,11 +21,14 @@ dependencies:
   google_fonts:
   flutter_modular: ^6.3.2
   flutter_triple: ^3.0.0
-  sign_in_with_apple: ^5.0.0
+  sign_in_with_apple: ^6.0.0
   google_sign_in: ^6.2.1
   dartz: ^0.10.1
-  asuka: ^2.2.0
-  flutter_slidable: ^0.6.0
+  asuka:
+    git:
+      url: https://github.com/Flutterando/asuka.git
+      ref: 82e0b98497d19d42e974d8252b31d13fde8e4ffb
+  flutter_slidable: ^3.0.1
   flutter_native_splash: ^2.3.9
   image_picker: ^1.0.7
   path_provider: ^2.1.1
@@ -35,9 +38,13 @@ dependencies:
   firebase_performance: ^0.9.3+3
   firebase_analytics: ^10.6.3
   cloud_firestore: ^4.12.2
-  mobile_scanner: ^3.5.2
+  cloud_functions: ^4.6.9
+  mobile_scanner: ^4.0.1
   path:
   supabase_flutter: ^2.0.0
+  firebase_auth: ^4.17.9
+  currency_text_input_formatter: ^2.1.14
+  firebase_storage: ^11.6.10
 
 dev_dependencies:
   flutter_test:

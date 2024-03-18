@@ -40,7 +40,7 @@ class CustomAttachmentImage extends StatelessWidget {
           ),
           Expanded(
             child: SizedBox(
-              child: image != null ? Image.file(File(image!)) : null,
+              child: image != null ? (image!.contains('http') ? Image.network(image!) : Image.file(File(image!))) : null,
             ),
           ),
         ],

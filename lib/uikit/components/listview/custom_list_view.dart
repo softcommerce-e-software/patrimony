@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:patrimony/uikit/components/listview/custom_list_item.dart';
 import 'package:patrimony/uikit/components/listview/custom_list_view_header.dart';
 
 class CustomListView extends StatefulWidget {
   final int itemCount;
-  final CustomListItem child;
+  final Widget? Function(int index) child;
+  final String title;
+  final IconData icon;
+  final GestureTapCallback? onAdd;
 
   const CustomListView({
     super.key,
     required this.itemCount,
-    required this.child,
+    required this.child, required this.title, required this.icon, this.onAdd,
   });
 
   @override
@@ -18,8 +19,6 @@ class CustomListView extends StatefulWidget {
 }
 
 class _CustomListViewState extends State<CustomListView> {
-  SlidableController slidableController = SlidableController();
-
   final double _defaultPadding = 16.0;
 
   @override
@@ -46,10 +45,11 @@ class _CustomListViewState extends State<CustomListView> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CustomListViewHeader(
-            title: 'Algum titulo',
+          CustomListViewHeader(
+            title: widget.title,
             prefixIcon: true,
-            icon: Icons.access_alarm_outlined,
+            icon: widget.icon,
+            onTap: widget.onAdd,
           ),
           Container(
             width: double.infinity,
@@ -63,24 +63,25 @@ class _CustomListViewState extends State<CustomListView> {
               separatorBuilder: (_, __) => const Divider(height: 0),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return Slidable(
-                  controller: slidableController,
-                  actionPane: const SlidableStrechActionPane(),
-                  secondaryActions: [
-                    const SizedBox(width: 8),
-                    IconSlideAction(
-                      color: Theme.of(context).primaryColor,
-                      foregroundColor: Theme.of(context).colorScheme.primary,
-                      icon: Icons.edit,
-                    ),
-                    IconSlideAction(
-                      color: Theme.of(context).colorScheme.error,
-                      foregroundColor: Theme.of(context).primaryColorLight,
-                      icon: Icons.delete,
-                    ),
-                  ],
-                  child: widget.child,
-                );
+                return widget.child(index);
+                // return Slidable(
+                //   controller: slidableController,
+                //   actionPane: const SlidableStrechActionPane(),
+                //   secondaryActions: [
+                //     const SizedBox(width: 8),
+                //     IconSlideAction(
+                //       color: Theme.of(context).primaryColor,
+                //       foregroundColor: Theme.of(context).colorScheme.primary,
+                //       icon: Icons.edit,
+                //     ),
+                //     IconSlideAction(
+                //       color: Theme.of(context).colorScheme.error,
+                //       foregroundColor: Theme.of(context).primaryColorLight,
+                //       icon: Icons.delete,
+                //     ),
+                //   ],
+                //   child: widget.child,
+                // );
               },
             ),
           ),

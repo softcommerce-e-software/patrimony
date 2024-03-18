@@ -4,7 +4,7 @@ import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
 
 mixin _UseCase {
-  Future<Either<Failure, List<CommonValueEntity>>> call();
+  Future<Either<Failure, List<CommonValueEntity>>> call(String id);
 }
 
 class GetTypesUseCase implements _UseCase {
@@ -13,7 +13,7 @@ class GetTypesUseCase implements _UseCase {
   GetTypesUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<CommonValueEntity>>> call() async {
-    return await _repository.getTypes();
+  Future<Either<Failure, List<CommonValueEntity>>> call(String id) async {
+    return await _repository.getTypes(id);
   }
 }

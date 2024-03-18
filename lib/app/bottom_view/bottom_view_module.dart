@@ -1,3 +1,5 @@
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:patrimony/app/app_module.dart';
 import 'package:patrimony/app/bottom_view/bottom_view_page.dart';
@@ -31,6 +33,8 @@ class BottomViewModule extends Module {
 
   @override
   void exportedBinds(Injector i) {
+    i.addInstance(FirebaseStorage.instance);
+    i.addInstance(FirebaseFunctions.instance);
     i.addLazySingleton<CompanyRepository>(CompanyRepositoryImpl.new);
     i.addLazySingleton<CompanyDataSource>(CompanyDataSourceImpl.new);
   }

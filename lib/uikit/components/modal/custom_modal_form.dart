@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:patrimony/uikit/components/buttons/custom_button.dart';
-import 'package:patrimony/uikit/components/inputs/custom_icon_input.dart';
 import 'package:patrimony/uikit/components/inputs/custom_text_field.dart';
-import 'package:patrimony/uikit/components/modal/custom_icon_select.dart';
 import 'package:patrimony/uikit/mockup/icons_list.dart';
 
 class CustomModalForm extends StatefulWidget {
-  final void Function(String, IconData) callback;
+  final void Function(String) callback;
 
   const CustomModalForm({super.key, required this.callback});
 
@@ -15,7 +13,8 @@ class CustomModalForm extends StatefulWidget {
 }
 
 class _CustomModalFormState extends State<CustomModalForm> {
-  IconData _icon = IconsList.flutterIcons[0];
+  final IconData _icon = IconsList.flutterIcons[0];
+  final TextEditingController _controller = TextEditingController();
 
   final _defaultBorder = BorderRadius.circular(8);
 
@@ -39,35 +38,13 @@ class _CustomModalFormState extends State<CustomModalForm> {
               children: [
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 4,
                       child: CustomTextField(
-                        labelText: 'Nome da propriedade',
+                        controller: _controller,
+                        labelText: 'Nome da categoria',
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: CustomIconInput(
-                        labelText: 'Icone',
-                        icon: _icon,
-                        onTap: () async {
-                          var response = await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const Dialog(
-                                child: CustomIconSelect(),
-                              );
-                            },
-                          );
-
-                          if (response != null) {
-                            setState(() {
-                              _icon = response;
-                            });
-                          }
-                        },
-                      ),
-                    )
                   ],
                 ),
                 Row(
@@ -86,9 +63,10 @@ class _CustomModalFormState extends State<CustomModalForm> {
                         context: context,
                         background: Theme.of(context).primaryColor,
                         buttonText: 'Confirmar',
+                        isDisable: _controller.text.isEmpty,
                         textColor: Theme.of(context).primaryColorLight,
                         onPressed: () {
-                          widget.callback.call('sad', _icon);
+                          widget.callback.call(_controller.text);
                           Navigator.pop(context);
                         },
                       ),

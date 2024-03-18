@@ -4,7 +4,7 @@ import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/entity/item_entity.dart';
 
 mixin _UseCase {
-  Future<Either<Failure, List<ItemEntity>>> call(String id);
+  Future<Either<Failure, List<ItemEntity>>> call(String companyId, String categoryId);
 }
 
 class GetItemsUseCase implements _UseCase {
@@ -13,7 +13,7 @@ class GetItemsUseCase implements _UseCase {
   GetItemsUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<ItemEntity>>> call(String id) async {
-    return await _repository.getItems(id);
+  Future<Either<Failure, List<ItemEntity>>> call(String companyId, String categoryId) async {
+    return await _repository.getItems(companyId, categoryId);
   }
 }
