@@ -43,8 +43,7 @@ class _ItemPageState extends State<ItemPage> {
     return Scaffold(
       appBar: CustomDynamicAppBar(
         title: widget.entity.code ?? "",
-        hasMenu: false,
-        actionTap: () => print('oio'),
+        items: [],
       ),
       body: _screen(),
     );

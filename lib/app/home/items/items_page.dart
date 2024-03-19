@@ -36,7 +36,7 @@ class _ItemsPageState extends State<ItemsPage> {
     return Scaffold(
       appBar: CustomDynamicAppBar(
         title: widget.categoryEntity.name ?? "",
-        actionTap: () => print('oio'),
+        items: [],
       ),
       body: SafeArea(
         child: RefreshIndicator(

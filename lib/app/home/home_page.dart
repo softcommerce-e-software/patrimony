@@ -23,8 +23,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: const CustomDynamicAppBar(
         title: "Patrimony",
-        hasMenu: false,
         hasBackButton: false,
+        items: [],
       ),
       body: SafeArea(
         child: RefreshIndicator(

@@ -14,7 +14,8 @@ class _BottomViewPageState extends State<BottomViewPage> {
   @override
   void initState() {
     super.initState();
-    Modular.to.addListener(onChangeRoute);
+    Modular.to.navigate('/bottom_view/home/');
+    // Modular.to.addListener(onChangeRoute);
   }
 
   @override
@@ -37,7 +38,7 @@ class _BottomViewPageState extends State<BottomViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const RouterOutlet(),
-      bottomNavigationBar: _bottomNavigationBar(),
+      // bottomNavigationBar: _bottomNavigationBar(),
     );
   }
 

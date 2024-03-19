@@ -37,9 +37,9 @@ class CompanyRepositoryImpl implements CompanyRepository {
   }
 
   @override
-  Future<Either<Failure, List<HistoryEntity>>> getHistory() async {
+  Future<Either<Failure, List<HistoryEntity>>> getHistory(String companyId) async {
     try {
-      return Right(await _dataSource.getHistory());
+      return Right(await _dataSource.getHistory(companyId));
     } catch (_) {
       return Left(RemoteFailure());
     }
@@ -102,6 +102,15 @@ class CompanyRepositoryImpl implements CompanyRepository {
       );
     } catch (_) {
     return Left(RemoteFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> postCategory(String companyId, String name) async {
+    try {
+      return Right(await _dataSource.postCategory(companyId, name));
+    } catch (_) {
+      return Left(RemoteFailure());
     }
   }
 }

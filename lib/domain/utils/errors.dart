@@ -1,3 +1,5 @@
+import 'package:asuka/snackbars/asuka_snack_bar.dart';
+
 class Failure implements Exception {
   String? message;
 
@@ -8,7 +10,9 @@ class RemoteFailure implements Failure {
   @override String? message;
   int? code;
 
-  RemoteFailure({this.message = "Ocorreu um erro, tente novamente mais tarde", this.code});
+  RemoteFailure({this.message = "Ocorreu um erro, tente novamente mais tarde", this.code}) {
+    AsukaSnackbar.alert(message ?? '').show();
+  }
 }
 
 class LoginError extends Failure {

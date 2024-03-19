@@ -24,7 +24,7 @@ class DartzEitherAdapter<R> extends EitherAdapter<Failure, R> {
           await Modular.get<UserRepository>().logout();
           Modular.to.pushReplacementNamed('/');
         }
-        if (showError) AsukaSnackbar.alert(l.message ?? '').show();
+        // if (showError) AsukaSnackbar.alert(l.message ?? '').show();
       }, (r) => null);
       return DartzEitherAdapter(value);
     });

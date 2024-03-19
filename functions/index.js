@@ -38,7 +38,9 @@ exports.getcompanies = onCall(async (request) => {
 
     const companyResponse = await getFirestore()
         .collection("companies")
-        .where("id", "in", companiesId.map((doc) => doc.company)).get();
+        .where("id", "in", companiesId.map((doc) => doc.company))
+        .orderBy("name")
+        .get();
     const companies = [];
     companyResponse.forEach((doc) => {
       companies.push(
@@ -142,7 +144,10 @@ exports.getcategories = onCall(async (request) => {
   if (userId != null && userId != undefined) {
     const companyId = request.data.id;
     const categoriesResponse = await getFirestore()
-        .collection("categories").where("company_id", "==", companyId).get();
+        .collection("categories")
+        .where("company_id", "==", companyId)
+        .orderBy("name")
+        .get();
 
     const categories = [];
     categoriesResponse.forEach((doc) => {
@@ -182,6 +187,27 @@ exports.getitems = onCall(async (request) => {
   }
 });
 
+exports.gethistory = onCall({enforceAppCheck: true}, async (request) => {
+  const userId = request.auth.uid;
+  if (userId != null && userId != undefined) {
+    const companyId = request.data.id;
+    const historyResponse = await getFirestore()
+        .collection("history")
+        .where("company_id", "==", companyId)
+        .orderBy("create_at", "desc")
+        .get();
+
+    const history = [];
+    historyResponse.forEach((doc) => {
+      history.push(doc.data());
+    });
+    logger.log("gethistory", "Busca de histórico com sucesso");
+    return JSON.stringify(history);
+  } else {
+    return "";
+  }
+});
+
 exports.postitem = onCall(async (request) => {
   const userId = request.auth.uid;
   if (userId != null && userId != undefined) {
@@ -214,7 +240,7 @@ exports.postitem = onCall(async (request) => {
             .collection("categories").doc(categoryId).get();
         const user = await getAuth().getUser(userId);
         const historyRef = getFirestore().collection("history").doc();
-        historyRef.set({
+        await historyRef.set({
           id: historyRef.id,
           company_id: companyId,
           item_id: ref.id,
@@ -245,7 +271,7 @@ exports.postcategory = onCall(async (request) => {
     try {
       const level = await userlevel(companyId, userId);
       if (level == 0 || level == 1) {
-        const ref = getFirestore().collection("category").doc();
+        const ref = getFirestore().collection("categories").doc();
         await ref.set({
           id: ref.id,
           company_id: companyId,
@@ -259,7 +285,7 @@ exports.postcategory = onCall(async (request) => {
             .collection("companies").doc(companyId).get();
         const user = await getAuth().getUser(userId);
         const historyRef = getFirestore().collection("history").doc();
-        historyRef.set({
+        await historyRef.set({
           id: historyRef.id,
           company_id: companyId,
           item_id: ref.id,

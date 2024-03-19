@@ -8,9 +8,7 @@ class HistoryStore extends AppState<List<HistoryEntity>> {
   final GetHistoryUseCase _useCase;
   HistoryStore(this._useCase) : super([]);
 
-  @override
-  void initStore() {
-    super.initStore();
-    executeEither(DartzEitherAdapter.adapter(_useCase.call()));
+  void getHistory(String companyId) {
+    executeEither(DartzEitherAdapter.adapter(_useCase.call(companyId)));
   }
 }

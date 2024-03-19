@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:patrimony/uikit/components/buttons/custom_icon_button.dart';
 
+class MenuItem {
+  String title;
+  Function() onTap;
+
+  MenuItem(this.title, this.onTap);
+}
+
 class CustomDynamicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final bool hasMenu;
   final bool hasBackButton;
-  final Function? actionTap;
+  final List<MenuItem> items;
 
   const CustomDynamicAppBar({
     super.key,
     required this.title,
-    this.actionTap,
-    this.hasMenu = true,
-    this.hasBackButton = true
+    this.hasBackButton = true,
+    required this.items,
   });
 
   void handleClick(String value) {
-    switch (value) {
-      case 'Apagar':
-        actionTap?.call();
-        break;
-    }
+    items.firstWhere((element) =>
+        element.title == value).onTap.call();
   }
 
   @override
@@ -34,21 +36,20 @@ class CustomDynamicAppBar extends StatelessWidget implements PreferredSizeWidget
         iconColor: Theme.of(context).primaryColorLight,
         onPressed: () => Navigator.of(context).pop(),
       ) : null,
-      actions: hasMenu ? [
+      actions: items.isNotEmpty ? [
         PopupMenuButton<String>(
           color: Theme.of(context).primaryColorLight,
-
           icon: Icon(
             Icons.more_vert,
             color: Theme.of(context).primaryColorLight,
           ),
           onSelected: handleClick,
           itemBuilder: (BuildContext context) {
-            return {'Apagar'}.map((String choice) {
+            return items.map((MenuItem choice) {
               return PopupMenuItem<String>(
-                value: choice,
+                value: choice.title,
                 child: Text(
-                  choice,
+                  choice.title,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.error
                   ),

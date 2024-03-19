@@ -8,7 +8,7 @@ import 'package:patrimony/entity/user_entity.dart';
 
 abstract class CompanyDataSource {
   Future<List<CompanyEntity>> getCompanies();
-  Future<List<HistoryEntity>> getHistory();
+  Future<List<HistoryEntity>> getHistory(String companyId);
   Future<List<CommonValueEntity>> getConservationStates();
   Future<List<ItemEntity>> getItems(String companyId, String categoryId);
   Future<List<CommonValueEntity>> getTypes(String id);
@@ -22,4 +22,5 @@ abstract class CompanyDataSource {
       String observations,
       List<File> attachments
   );
+  Future<bool> postCategory(String companyId, String name);
 }

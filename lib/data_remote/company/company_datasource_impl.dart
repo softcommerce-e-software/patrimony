@@ -36,16 +36,19 @@ class CompanyDataSourceImpl implements CompanyDataSource {
   }
 
   @override
-  Future<List<HistoryEntity>> getHistory() async {
-    throw RemoteFailure();
-    // try {
-    //   var response = await _db
-    //       .from(_HISTORY)
-    //       .select();
-    //   return response.map((e) => HistoryEntity.fromJson(e)).toList();
-    // } catch (_) {
-    //   throw RemoteFailure();
-    // }
+  Future<List<HistoryEntity>> getHistory(String companyId) async {
+    try {
+      var response = await _functions
+          .httpsCallable(
+        'gethistory',
+        options: HttpsCallableOptions(
+          limitedUseAppCheckToken: true,
+        ),
+      ).call({'companyId': companyId});
+      return listHistoryEntityFromJson(response.data);
+    } catch (e) {
+      throw RemoteFailure();
+    }
   }
 
   @override
@@ -154,6 +157,21 @@ class CompanyDataSourceImpl implements CompanyDataSource {
         'value': value,
         'observations': observations,
         'attachments': urls,
+      });
+      return jsonDecode(response.data)['success'];
+    } catch (e) {
+      throw RemoteFailure();
+    }
+  }
+
+  Future<bool> postCategory(String companyId, String name) async {
+    try {
+      var response = await _functions.httpsCallable(
+        'postcategory',
+        options: HttpsCallableOptions(limitedUseAppCheckToken: false,),
+      ).call({
+        'companyId': companyId,
+        'name': name,
       });
       return jsonDecode(response.data)['success'];
     } catch (e) {

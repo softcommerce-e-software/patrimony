@@ -10,7 +10,7 @@ import 'package:patrimony/entity/user_entity.dart';
 
 abstract class CompanyRepository {
   Future<Either<Failure, List<CompanyEntity>>> getCompanies();
-  Future<Either<Failure, List<HistoryEntity>>> getHistory();
+  Future<Either<Failure, List<HistoryEntity>>> getHistory(String companyId);
   Future<Either<Failure, List<CommonValueEntity>>> getConservationStates();
   Future<Either<Failure, List<ItemEntity>>> getItems(String companyId, String categoryId);
   Future<Either<Failure, List<CommonValueEntity>>> getTypes(String id);
@@ -24,4 +24,5 @@ abstract class CompanyRepository {
       String observations,
       List<File> attachments
   );
+  Future<Either<Failure, bool>> postCategory(String companyId, String name);
 }

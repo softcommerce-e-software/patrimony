@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:patrimony/app/home/add_item/add_item_store.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/uikit/components/appBar/custom_dynamic_app_bar.dart';
@@ -37,111 +39,142 @@ class _AddItemPageState extends State<AddItemPage> {
     return Scaffold(
       appBar: const CustomDynamicAppBar(
         title: "Adicionar Item",
-        hasMenu: false
+        items: [],
       ),
       body: SafeArea(
-        child: AppScopedBuilder<AddItemStoreStore, Failure, bool>(
-          store: _store,
-          onState: (_, result) {
-            return StatefulBuilder(
-              builder: (context, setState) {
-                return Flex(
-                  direction: Axis.vertical,
-                  children: [
-                    Expanded(
-                      child: ListView(
-                          scrollDirection: Axis.vertical,
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-                          children: [
-                            CustomMessageField(
-                              controller: _barcodeController,
-                              labelText: 'Código de barras',
-                              textInputType: TextInputType.number,
-                              hintText: '0001',
-                              onChanged: (value) => setState(() {}),
-                              padding: const EdgeInsets.only(bottom: 16.0),
-
-                            ),
-                            CustomMessageField(
-                              controller: _valueController,
-                              labelText: 'Valor',
-                              textInputType: TextInputType.number,
-                              onChanged: (value) => setState(() {}),
-                              inputFormatter: [_formatter,],
-                              hintText: 'R\$ 12,00',
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                            ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(bottom: 16.0),
-                            //   child: CustomDropDown(
-                            //     value: _state,
-                            //     labelText: 'Estado atual',
-                            //     hintText: 'Na propriedade',
-                            //     items: ['Na propriedade', 'Fora da propriedade'],
-                            //     onSelected: (String? value) => {
-                            //       _state = value
-                            //     },
-                            //   ),
-                            // ),
-                            CustomMessageField(
-                              controller: _observationsController,
-                              labelText: 'Observações',
-                              onChanged: (value) => setState(() {}),
-                              hintText: 'Ex: O produto está com mal contato no fio',
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16.0),
-                              child: AttachmentGrid(
-                                items: _attachments
-                                    .map((e) =>  AttachmentEntity("", e.path)).toList(),
-                                onDelete: (item) => {},
-                                onAdd: () async {
-                                  var image = await addAttachment();
-                                  if (image != null) {
-                                    _attachments.add(image);
-                                    setState(() {});
-                                  }
-                                },
-                              ),
-                            ),
-                          ]
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 16.0
-                      ),
-                      child: CustomButton(
-                          context: context,
-                          background: Theme.of(context).primaryColor,
-                          textColor: Theme.of(context).primaryColorLight,
-                          buttonText: 'Salvar',
-                          onPressed: () => _store.addItem(
-                              widget.companyId,
-                              widget.categoryId,
-                              _barcodeController.text,
-                              _formatter.getUnformattedValue().toDouble(),
-                              _observationsController.text,
-                              _attachments
-                          ),
-                          isDisable: _barcodeController.text.isEmpty
-                              || _valueController.text.isEmpty
-                      ),
-                    )
-                  ],
-                );
-              }
-            );
-          },
-          onError: (_, e) => const Center(
-            child: Text('Ocorreu um erro, tente novamente mais tarde'),
-          ),
-        ),
+        child: _barcodeController.text.trim().isNotEmpty ? _screen() : _scan(),
       ),
     );
   }
 
+  Widget _screen() {
+    return AppScopedBuilder<AddItemStoreStore, Failure, bool>(
+      store: _store,
+      onState: (_, result) {
+        return StatefulBuilder(
+            builder: (context, setState) {
+              return Flex(
+                direction: Axis.vertical,
+                children: [
+                  Expanded(
+                    child: ListView(
+                        scrollDirection: Axis.vertical,
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+                        children: [
+                          CustomMessageField(
+                            controller: _barcodeController,
+                            labelText: 'Código de barras',
+                            textInputType: TextInputType.number,
+                            enabled: false,
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                          ),
+                          CustomMessageField(
+                            controller: _valueController,
+                            labelText: 'Valor',
+                            textInputType: TextInputType.number,
+                            onChanged: (value) => setState(() {}),
+                            inputFormatter: [_formatter,],
+                            hintText: 'R\$ 12,00',
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(bottom: 16.0),
+                          //   child: CustomDropDown(
+                          //     value: _state,
+                          //     labelText: 'Estado atual',
+                          //     hintText: 'Na propriedade',
+                          //     items: ['Na propriedade', 'Fora da propriedade'],
+                          //     onSelected: (String? value) => {
+                          //       _state = value
+                          //     },
+                          //   ),
+                          // ),
+                          CustomMessageField(
+                            controller: _observationsController,
+                            labelText: 'Observações',
+                            onChanged: (value) => setState(() {}),
+                            hintText: 'Ex: O produto está com mal contato no fio',
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: AttachmentGrid(
+                              items: _attachments
+                                  .map((e) =>  AttachmentEntity("", e.path)).toList(),
+                              onDelete: (item) => {},
+                              onAdd: () async {
+                                var image = await addAttachment();
+                                if (image != null) {
+                                  _attachments.add(image);
+                                  setState(() {});
+                                }
+                              },
+                            ),
+                          ),
+                        ]
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 16.0
+                    ),
+                    child: CustomButton(
+                        context: context,
+                        background: Theme.of(context).primaryColor,
+                        textColor: Theme.of(context).primaryColorLight,
+                        buttonText: 'Salvar',
+                        onPressed: () => _store.addItem(
+                            widget.companyId,
+                            widget.categoryId,
+                            _barcodeController.text,
+                            _formatter.getUnformattedValue().toDouble(),
+                            _observationsController.text,
+                            _attachments
+                        ),
+                        isDisable: _barcodeController.text.isEmpty
+                            || _valueController.text.isEmpty
+                    ),
+                  )
+                ],
+              );
+            }
+        );
+      },
+      onError: (_, e) => const Center(
+        child: Text('Ocorreu um erro, tente novamente mais tarde'),
+      ),
+    );
+  }
 
+  Widget _scan() {
+    return MobileScanner(
+      onDetect: (capture) {
+        final List<Barcode> barcodes = capture.barcodes;
+        for (final barcode in barcodes) {
+          var value = barcode.rawValue;
+          if(value?.trim().isNotEmpty == true) {
+            _barcodeController.text = value!.trim();
+            setState(() {});
+            print(value);
+          }
+        }
+      },
+      errorBuilder: (context, exception, widget) {
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Text(
+              'Ocorreu um erro ao tentar acessar a câmera.\nPor favor, ative a câmera nas configurações do aplicativo.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
