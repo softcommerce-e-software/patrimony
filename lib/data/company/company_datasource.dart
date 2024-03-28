@@ -17,10 +17,13 @@ abstract class CompanyDataSource {
   Future<bool> postItem(
       String companyId,
       String categoryId,
+      String name,
       String barcode,
       double value,
       String observations,
-      List<File> attachments
+      List<File> attachments,
+      String imagePath
   );
   Future<bool> postCategory(String companyId, String name);
+  Future<bool> deleteItem(String id);
 }

@@ -133,30 +133,43 @@ class CompanyDataSourceImpl implements CompanyDataSource {
   Future<bool> postItem(
       String companyId,
       String categoryId,
+      String name,
       String barcode,
       double value,
       String observations,
-      List<File> attachments
+      List<File> attachments,
+      String imagePath
   ) async {
     try {
-      var futureUrls = attachments.map((e) async {
+      var futureAttachmentsUrls = attachments.map((e) async {
         var ref = _storage.ref().child('invoices/$companyId/$categoryId/'
             '${DateTime.now().millisecondsSinceEpoch}.jpg');
         await ref.putFile(e);
         var url = await ref.getDownloadURL();
         return url;
       });
-      var urls = await Future.wait(futureUrls);
+      var attachmentsUrls = await Future.wait(futureAttachmentsUrls);
+
+      var imageUrl = "";
+     if (imagePath.isNotEmpty) {
+       var ref = _storage.ref().child('item/$companyId/$categoryId/'
+           '${DateTime.now().millisecondsSinceEpoch}.jpg');
+       await ref.putFile(File(imagePath));
+       imageUrl = await ref.getDownloadURL();
+     }
+
       var response = await _functions.httpsCallable(
         'postitem',
         options: HttpsCallableOptions(limitedUseAppCheckToken: false,),
       ).call({
         'companyId': companyId,
         'categoryId': categoryId,
+        'name': name,
         'barcode': barcode,
         'value': value,
         'observations': observations,
-        'attachments': urls,
+        'attachments': attachmentsUrls,
+        'image': imageUrl
       });
       return jsonDecode(response.data)['success'];
     } catch (e) {
@@ -173,6 +186,22 @@ class CompanyDataSourceImpl implements CompanyDataSource {
         'companyId': companyId,
         'name': name,
       });
+      return jsonDecode(response.data)['success'];
+    } catch (e) {
+      throw RemoteFailure();
+    }
+  }
+
+  @override
+  Future<bool> deleteItem(String id) async {
+    try {
+      var response = await _functions
+          .httpsCallable(
+        'deleteitem',
+        options: HttpsCallableOptions(
+          limitedUseAppCheckToken: false,
+        ),
+      ).call({'id': id});
       return jsonDecode(response.data)['success'];
     } catch (e) {
       throw RemoteFailure();

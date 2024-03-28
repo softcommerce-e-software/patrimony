@@ -173,7 +173,7 @@ exports.getitems = onCall(async (request) => {
         .collection("items")
         .where("company_id", "==", companyId)
         .where("category_id", "==", categoryId)
-        .orderBy("code")
+        .orderBy("name")
         .get();
 
     const items = [];
@@ -210,13 +210,15 @@ exports.gethistory = onCall({enforceAppCheck: true}, async (request) => {
 
 exports.postitem = onCall(async (request) => {
   const userId = request.auth.uid;
-  if (userId != null && userId != undefined) {
+  const name = request.data.name;
+  if (userId != null && userId != undefined && name != null) {
     const companyId = request.data.companyId;
     const categoryId = request.data.categoryId;
     const barcode = request.data.barcode;
     const value = request.data.value;
     const observations = request.data.observations;
     const attachments = request.data.attachments;
+    const image = request.data.image;
 
     try {
       const level = await userlevel(companyId, userId);
@@ -226,8 +228,10 @@ exports.postitem = onCall(async (request) => {
           id: ref.id,
           company_id: companyId,
           category_id: categoryId,
+          name: name,
           code: barcode,
           value: value,
+          image: image,
           observations: observations,
           attachments: attachments,
           create_at: Timestamp.now(),
@@ -244,7 +248,7 @@ exports.postitem = onCall(async (request) => {
           id: historyRef.id,
           company_id: companyId,
           item_id: ref.id,
-          title: `${category.data()["name"]} ${barcode} criado`,
+          title: `${category.data()["name"]}: ${name} - ${barcode} criado`,
           email: user.email,
           create_at: Timestamp.now(),
           update_at: Timestamp.now(),
@@ -304,5 +308,44 @@ exports.postcategory = onCall(async (request) => {
     }
   } else {
     return "";
+  }
+});
+
+exports.deleteitem = onCall(async (request) => {
+  const userId = request.auth.uid;
+  if (userId != null && userId != undefined) {
+    const id = request.data.id;
+    const ref = getFirestore().collection("items").doc(id);
+    const item = await ref.get();
+    try {
+      const level = await userlevel(item.data()["company_id"], userId);
+      if (level == 0 || level == 1) {
+        await ref.delete();
+        logger.log("deleteitem", "Item apagado com sucesso");
+
+        const category = await getFirestore()
+            .collection("categories").doc(item.data()["category_id"]).get();
+        const user = await getAuth().getUser(userId);
+        const historyRef = getFirestore().collection("history").doc();
+        await historyRef.set({
+          id: historyRef.id,
+          company_id: item.data()["company_id"],
+          item_id: ref.id,
+          title: `${category.data()["name"]}: ${item
+              .data()["name"]} - ${item.data()["barcode"]} deletado`,
+          email: user.email,
+          create_at: Timestamp.now(),
+          update_at: Timestamp.now(),
+        });
+        logger.log("deleteitem", "Histórico de deleção criado");
+        return JSON.stringify({success: true});
+      }
+      logger.log("deleteitem", `${userId} Nível insuficiente`);
+      return JSON.stringify({success: false});
+    } catch (_) {
+      return JSON.stringify({success: false});
+    }
+  } else {
+    return JSON.stringify({success: false});
   }
 });

@@ -24,6 +24,7 @@ class ItemPage extends StatefulWidget {
 class _ItemPageState extends State<ItemPage> {
   final ItemStore _store = Modular.get();
   final TextEditingController _barcodeController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
   final TextEditingController _observationsController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
@@ -31,6 +32,7 @@ class _ItemPageState extends State<ItemPage> {
   @override
   void initState() {
     super.initState();
+    _nameController.text = widget.entity.name ?? "";
     _barcodeController.text = widget.entity.code ?? "";
     _valueController.text = widget.entity.value?.toString() ?? "";
     _observationsController.text = widget.entity.code ?? "";
@@ -59,6 +61,18 @@ class _ItemPageState extends State<ItemPage> {
                 scrollDirection: Axis.vertical,
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
                 children: [
+                  widget.entity.image?.isNotEmpty  == true ?
+                  Image.network(
+                      widget.entity.image ?? '',
+                    height: 200,
+                  ) : const SizedBox(),
+                  CustomMessageField(
+                    controller: _nameController,
+                    labelText: 'Nome',
+                    hintText: '',
+                    enabled: false,
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                  ),
                   CustomMessageField(
                     controller: _barcodeController,
                     labelText: 'Código de barras',
@@ -66,7 +80,6 @@ class _ItemPageState extends State<ItemPage> {
                     hintText: '',
                     enabled: false,
                     padding: const EdgeInsets.only(bottom: 16.0),
-
                   ),
                   CustomMessageField(
                     controller: _valueController,
@@ -120,60 +133,14 @@ class _ItemPageState extends State<ItemPage> {
             ),
             child: CustomButton(
                 context: context,
-                background: Theme.of(context).primaryColor,
+                background: Theme.of(context).colorScheme.error,
                 textColor: Theme.of(context).primaryColorLight,
-                buttonText: 'Salvar',
-                onPressed: () {},
-                isDisable: true
+                buttonText: 'Deletar',
+                onPressed: () => _store.delete(widget.entity.id),
+                isDisable: false
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget _inputText(String label, String text) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: 1.heightPercent, left: 3.widthPercent, right: 3.widthPercent),
-      child: TextFormField(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: label,
-        ),
-        controller: TextEditingController(text: text),
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: Colors.black,
-            ),
-        enabled: false,
-      ),
-    );
-  }
-
-  Widget _dropDown(
-      String label,
-      String initialSelection,
-      TextEditingController controller,
-      List<DropdownMenuEntry<String>> dropdownMenuEntries,
-      Function(String?) onSelected) {
-    return SizedBox(
-      width: 100.widthPercent,
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: 1.heightPercent,
-          left: 3.widthPercent,
-          right: 3.widthPercent,
-        ),
-        child: Expanded(
-          child: DropdownMenu<String>(
-            width: 94.widthPercent,
-            initialSelection: initialSelection,
-            controller: controller,
-            label: Text(label),
-            dropdownMenuEntries: dropdownMenuEntries,
-            onSelected: onSelected,
-          ),
-        ),
       ),
     );
   }

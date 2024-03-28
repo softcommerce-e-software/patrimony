@@ -8,10 +8,12 @@ mixin _UseCase {
   Future<Either<Failure, bool>> call(
       String companyId,
       String categoryId,
+      String name,
       String barcode,
       double value,
       String observations,
-      List<File> attachments
+      List<File> attachments,
+      String imagePath
   );
 }
 
@@ -24,14 +26,16 @@ class PostItemUseCase implements _UseCase {
   Future<Either<Failure, bool>> call(
       String companyId,
       String categoryId,
+      String name,
       String barcode,
       double value,
       String observations,
-      List<File> attachments
+      List<File> attachments,
+      String imagePath
   ) async {
     return await _repository.postItem(
-        companyId, categoryId, barcode, value, observations,
-        attachments
+        companyId, categoryId, name, barcode, value, observations,
+        attachments, imagePath
     );
 }
 }

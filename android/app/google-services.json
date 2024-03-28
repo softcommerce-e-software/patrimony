@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1041526288855-dm1p52abg229955t9o5bco7ildc83ugh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.patrimony",
+            "certificate_hash": "f571d8d71c3a0e44bdad241c807c6458a84a7757"
+          }
+        },
+        {
           "client_id": "1041526288855-i4ihl03cgoe9rp9i32q9ipfe9t4p5q2u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

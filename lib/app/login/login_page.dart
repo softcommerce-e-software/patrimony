@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     _store.observer(
       onState: (state) {
         if (state) {
-          Modular.to.pushReplacementNamed('/bottom_view/home/');
+          Modular.to.pushReplacementNamed('/bottom_view/home', forRoot: true);
         }
       },
     );

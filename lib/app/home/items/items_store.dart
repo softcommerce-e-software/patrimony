@@ -14,9 +14,12 @@ class ItemsStore extends AppState<List<ItemEntity>> {
         _useCase.call(companyId, categoryId)));
   }
 
-  void goToItem(ItemEntity entity) {
-    Modular.to
+  void goToItem(ItemEntity entity) async {
+    var response = await Modular.to
         .pushNamed('/bottom_view/home/item', arguments: entity, forRoot: true);
+    if (response == true) {
+      getItems(entity.companyId ?? '', entity.categoryId ?? '');
+    }
   }
 
   void goToAddItem(String companyId, String categoryId) async {

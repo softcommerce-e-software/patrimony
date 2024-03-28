@@ -19,10 +19,13 @@ abstract class CompanyRepository {
   Future<Either<Failure, bool>> postItem(
       String companyId,
       String categoryId,
+      String name,
       String barcode,
       double value,
       String observations,
-      List<File> attachments
+      List<File> attachments,
+      String imagePath
   );
   Future<Either<Failure, bool>> postCategory(String companyId, String name);
+  Future<Either<Failure, bool>> deleteItem(String id);
 }

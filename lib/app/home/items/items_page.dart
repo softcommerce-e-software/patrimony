@@ -58,8 +58,10 @@ class _ItemsPageState extends State<ItemsPage> {
                       widget.categoryEntity.id!
                     ),
                     child: (index) => CustomListItem(
-                      title: _store.state[index].code ?? "",
-                      subtitle: _store.state[index].status ?? "12",
+                      title: '${_store.state[index].name}'
+                          '${_store.state[index].code?.isNotEmpty == true
+                          ? ' - ${_store.state[index].code}' : ''}',
+                      subtitle: _store.state[index].status ?? "",
                       onTap: () => _store.goToItem(_store.state[index]),
                     )
                 ),

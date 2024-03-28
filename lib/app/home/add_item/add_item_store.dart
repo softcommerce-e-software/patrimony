@@ -13,24 +13,47 @@ class AddItemStoreStore extends AppState<bool> {
   Future<void> addItem(
     String companyId,
     String categoryId,
+    String name,
     String barcode,
     double value,
     String observations,
-    List<File> attachments
+    List<File> attachments,
+    String imagePath
   ) async {
     setLoading(true);
     var response = await _useCase.call(
       companyId,
       categoryId,
+      name,
       barcode,
       value,
       observations,
-      attachments
+      attachments,
+      imagePath
     );
     response.fold(
-      (l) => AsukaSnackbar.alert(l.message ?? '').show(),
+      (l) => {},
       (r) => Modular.to.pop(r)
     );
     setLoading(false);
+  }
+
+  Future<String> goToBarcode() async {
+    return _auxCamera('/bottom_view/home/barcode');
+  }
+
+  Future<String> goToCamera() async {
+    return _auxCamera('/bottom_view/home/camera');
+  }
+
+  Future<String> _auxCamera(String path) async {
+    var response = await Modular.to.pushNamed(
+        path,
+        forRoot: true
+    );
+    if (response is String) {
+      return response;
+    }
+    return "";
   }
 }

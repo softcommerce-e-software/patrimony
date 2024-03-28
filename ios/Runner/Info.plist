@@ -48,7 +48,7 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>Esse aplicativo precisa do acesso a câmera para fazer o scan do código de barras</string>
+		<string>Esse aplicativo precisa do acesso a câmera para fazer o scan do código de barras e tirar foto de seu produto</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

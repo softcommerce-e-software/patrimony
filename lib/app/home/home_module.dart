@@ -5,6 +5,8 @@ import 'package:patrimony/app/history/history_page.dart';
 import 'package:patrimony/app/history/history_store.dart';
 import 'package:patrimony/app/home/add_item/add_item_page.dart';
 import 'package:patrimony/app/home/add_item/add_item_store.dart';
+import 'package:patrimony/app/home/camera/barcode_page.dart';
+import 'package:patrimony/app/home/camera/camera_page.dart';
 import 'package:patrimony/app/home/home_page.dart';
 import 'package:patrimony/app/home/home_store.dart';
 import 'package:patrimony/app/home/item/item_page.dart';
@@ -12,6 +14,7 @@ import 'package:patrimony/app/home/items/items_page.dart';
 import 'package:patrimony/app/home/items/items_store.dart';
 import 'package:patrimony/app/home/types/types_page.dart';
 import 'package:patrimony/app/home/types/types_store.dart';
+import 'package:patrimony/domain/company/delete_item_usecase.dart';
 import 'package:patrimony/domain/company/get_companies_usecase.dart';
 import 'package:patrimony/domain/company/get_conservation_states_usecase.dart';
 import 'package:patrimony/domain/company/get_history_usecase.dart';
@@ -36,6 +39,7 @@ class HomeModule extends Module {
     i.add(GetUsersUseCase.new);
     i.add(GetItemsUseCase.new);
     i.add(PostCategoryUseCase.new);
+    i.add(DeleteItemUseCase.new);
     i.add(HomeStore.new);
     i.add(TypesStore.new);
     i.add(ItemsStore.new);
@@ -63,6 +67,8 @@ class HomeModule extends Module {
             categoryId: r.args.data['categoryId']
         ),),
         ChildRoute('/history', child: (_) => HistoryPage(companyId: r.args.data),),
+        ChildRoute('/barcode', child: (_) => BarcodePage(),),
+        ChildRoute('/camera', child: (_) => const CameraPage(),),
       ]
     );
   }

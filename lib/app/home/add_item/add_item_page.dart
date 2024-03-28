@@ -4,7 +4,6 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:patrimony/app/home/add_item/add_item_store.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/uikit/components/appBar/custom_dynamic_app_bar.dart';
@@ -24,6 +23,8 @@ class AddItemPage extends StatefulWidget {
 
 class _AddItemPageState extends State<AddItemPage> {
   final AddItemStoreStore _store = Modular.get();
+  String _imagePath = '';
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _barcodeController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
   final TextEditingController _observationsController = TextEditingController();
@@ -42,7 +43,7 @@ class _AddItemPageState extends State<AddItemPage> {
         items: [],
       ),
       body: SafeArea(
-        child: _barcodeController.text.trim().isNotEmpty ? _screen() : _scan(),
+        child: _screen()
       ),
     );
   }
@@ -61,12 +62,47 @@ class _AddItemPageState extends State<AddItemPage> {
                         scrollDirection: Axis.vertical,
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
                         children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Foto'),
+                              InkWell(
+                                onTap: () async {
+                                  var photo = await _store.goToCamera();
+                                  setState(() {
+                                    _imagePath = photo;
+                                  });
+                                },
+                                child: Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: _imagePath.isEmpty ? const Icon(Icons.photo)
+                                      : Image.file(File(_imagePath)),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 16,),
                           CustomMessageField(
-                            controller: _barcodeController,
-                            labelText: 'Código de barras',
-                            textInputType: TextInputType.number,
-                            enabled: false,
+                            controller: _nameController,
+                            labelText: 'Nome',
+                            hintText: 'Nome do item',
                             padding: const EdgeInsets.only(bottom: 16.0),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              var barcode = await _store.goToBarcode();
+                             setState(() {
+                               _barcodeController.text = barcode;
+                             });
+                            },
+                            child: CustomMessageField(
+                              controller: _barcodeController,
+                              labelText: 'Código de barras',
+                              textInputType: TextInputType.number,
+                              enabled: false,
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                            ),
                           ),
                           CustomMessageField(
                             controller: _valueController,
@@ -127,12 +163,14 @@ class _AddItemPageState extends State<AddItemPage> {
                         onPressed: () => _store.addItem(
                             widget.companyId,
                             widget.categoryId,
+                            _nameController.text,
                             _barcodeController.text,
                             _formatter.getUnformattedValue().toDouble(),
                             _observationsController.text,
-                            _attachments
+                            _attachments,
+                            _imagePath
                         ),
-                        isDisable: _barcodeController.text.isEmpty
+                        isDisable: _nameController.text.isEmpty
                             || _valueController.text.isEmpty
                     ),
                   )
@@ -144,37 +182,6 @@ class _AddItemPageState extends State<AddItemPage> {
       onError: (_, e) => const Center(
         child: Text('Ocorreu um erro, tente novamente mais tarde'),
       ),
-    );
-  }
-
-  Widget _scan() {
-    return MobileScanner(
-      onDetect: (capture) {
-        final List<Barcode> barcodes = capture.barcodes;
-        for (final barcode in barcodes) {
-          var value = barcode.rawValue;
-          if(value?.trim().isNotEmpty == true) {
-            _barcodeController.text = value!.trim();
-            setState(() {});
-            print(value);
-          }
-        }
-      },
-      errorBuilder: (context, exception, widget) {
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Text(
-              'Ocorreu um erro ao tentar acessar a câmera.\nPor favor, ative a câmera nas configurações do aplicativo.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

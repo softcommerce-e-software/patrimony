@@ -88,16 +88,18 @@ class CompanyRepositoryImpl implements CompanyRepository {
   Future<Either<Failure, bool>> postItem(
       String companyId,
       String categoryId,
+      String name,
       String barcode,
       double value,
       String observations,
-      List<File> attachments
+      List<File> attachments,
+      String imagePath
   ) async {
     try {
       return Right(
           await _dataSource.postItem(
-            companyId, categoryId, barcode, value, observations,
-            attachments
+            companyId, categoryId, name, barcode, value, observations,
+            attachments, imagePath
           )
       );
     } catch (_) {
@@ -109,6 +111,15 @@ class CompanyRepositoryImpl implements CompanyRepository {
   Future<Either<Failure, bool>> postCategory(String companyId, String name) async {
     try {
       return Right(await _dataSource.postCategory(companyId, name));
+    } catch (_) {
+      return Left(RemoteFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteItem(String id) async {
+    try {
+      return Right(await _dataSource.deleteItem(id));
     } catch (_) {
       return Left(RemoteFailure());
     }
