@@ -54,6 +54,7 @@ class ItemStore extends AppStoreState<ItemEntity> {
       double value,
       String observations,
       String status,
+      String workingStatus
   ) async {
     setLoading(true);
     var response = await _updateItemUseCase.call(
@@ -63,6 +64,7 @@ class ItemStore extends AppStoreState<ItemEntity> {
         value,
         observations,
         status,
+        workingStatus,
     );
     response.fold(
             (l) => null,
@@ -72,7 +74,8 @@ class ItemStore extends AppStoreState<ItemEntity> {
                     code: barcode,
                     value: value,
                     observations: observations,
-                    status: status
+                    status: status,
+                    workingStatus: workingStatus,
                 )
     );
     setLoading(false);

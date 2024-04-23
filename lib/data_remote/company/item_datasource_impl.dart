@@ -52,7 +52,8 @@ class ItemDataSourceImpl implements ItemDataSource {
       double value,
       String observations,
       List<File> attachments,
-      String imagePath
+      String imagePath,
+      String workingStatus
   ) async {
     try {
       var futureAttachmentsUrls = attachments.map((e) async {
@@ -83,7 +84,8 @@ class ItemDataSourceImpl implements ItemDataSource {
         'value': value,
         'observations': observations,
         'attachments': attachmentsUrls,
-        'image': imageUrl
+        'image': imageUrl,
+        'workingStatus': workingStatus
       });
       return jsonDecode(response.data)['success'];
     } catch (e) {
@@ -115,6 +117,7 @@ class ItemDataSourceImpl implements ItemDataSource {
       double value,
       String observations,
       String status,
+      String workingStatus
   ) async {
     try {
       var response = await _functions.httpsCallable(
@@ -126,6 +129,7 @@ class ItemDataSourceImpl implements ItemDataSource {
         'value': value,
         'observations': observations,
         'status': status,
+        'workingStatus': workingStatus,
       });
       return jsonDecode(response.data)['success'];
     } catch (e) {

@@ -17,7 +17,8 @@ class AddItemStoreStore extends AppStoreState<bool> {
     double value,
     String observations,
     List<File> attachments,
-    String imagePath
+    String imagePath,
+    String workingStatus
   ) async {
     setLoading(true);
     var response = await _useCase.call(
@@ -28,7 +29,8 @@ class AddItemStoreStore extends AppStoreState<bool> {
       value,
       observations,
       attachments,
-      imagePath
+      imagePath,
+      workingStatus
     );
     response.fold(
       (l) => {},

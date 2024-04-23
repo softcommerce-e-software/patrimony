@@ -39,13 +39,14 @@ class ItemRepositoryImpl implements ItemRepository {
       double value,
       String observations,
       List<File> attachments,
-      String imagePath
+      String imagePath,
+      String workingStatus
   ) async {
     try {
       return Right(
           await _dataSource.postItem(
             companyId, categoryId, name, barcode, value, observations,
-            attachments, imagePath
+            attachments, imagePath, workingStatus
           )
       );
     } catch (_) {
@@ -70,11 +71,12 @@ class ItemRepositoryImpl implements ItemRepository {
       double value,
       String observations,
       String status,
+      String workingStatus
   ) async {
     try {
       return Right(
           await _dataSource.updateItem(
-              itemId, name, barcode, value, observations, status
+              itemId, name, barcode, value, observations, status, workingStatus
           )
       );
     } catch (_) {

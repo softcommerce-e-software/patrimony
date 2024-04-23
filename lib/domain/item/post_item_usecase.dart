@@ -14,7 +14,8 @@ mixin _UseCase {
       double value,
       String observations,
       List<File> attachments,
-      String imagePath
+      String imagePath,
+      String workingStatus
   );
 }
 
@@ -32,11 +33,12 @@ class PostItemUseCase implements _UseCase {
       double value,
       String observations,
       List<File> attachments,
-      String imagePath
+      String imagePath,
+      String workingStatus
   ) async {
     return await _repository.postItem(
         companyId, categoryId, name, barcode, value, observations,
-        attachments, imagePath
+        attachments, imagePath, workingStatus
     );
 }
 }

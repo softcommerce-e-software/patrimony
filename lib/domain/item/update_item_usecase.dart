@@ -10,6 +10,7 @@ mixin _UseCase {
       double value,
       String observations,
       String status,
+      String workingStatus
   );
 }
 
@@ -26,9 +27,10 @@ class UpdateItemUseCase implements _UseCase {
       double value,
       String observations,
       String status,
+      String workingStatus
   ) async {
     return await _repository.updateItem(
-        itemId, name, barcode, value, observations, status
+        itemId, name, barcode, value, observations, status, workingStatus
     );
 }
 }

@@ -15,7 +15,8 @@ class ItemEntity {
     String? status,
     String? image,
       num? value, 
-      List<String>? attachments,}){
+      List<String>? attachments,
+    String? workingStatus}){
     _id = id;
     _code = code;
     _categoryId = categoryId;
@@ -26,6 +27,7 @@ class ItemEntity {
     _status = status;
     _image = image;
     _attachments = attachments;
+    _workingStatus = workingStatus;
 }
 
   ItemEntity.fromJson(dynamic json) {
@@ -39,6 +41,7 @@ class ItemEntity {
     _status = json['status'];
     _image = json['image'];
     _attachments = json['attachments'] != null ? json['attachments'].cast<String>() : [];
+    _workingStatus = json['working_status'];
   }
   String? _id;
   String? _code;
@@ -50,6 +53,8 @@ class ItemEntity {
   String? _status;
   num? _value;
   List<String>? _attachments;
+  String? _workingStatus;
+
 ItemEntity copyWith({  String? id,
   String? code,
   String? categoryId,
@@ -60,6 +65,7 @@ ItemEntity copyWith({  String? id,
   String? image,
   num? value,
   List<String>? attachments,
+  String? workingStatus
 }) => ItemEntity(  id: id ?? _id,
   code: code ?? _code,
   categoryId: categoryId ?? _categoryId,
@@ -70,6 +76,7 @@ ItemEntity copyWith({  String? id,
   status: status ?? _status,
   image: image ?? _image,
   attachments: attachments ?? _attachments,
+  workingStatus: workingStatus ?? _workingStatus ?? workingStatusList[0]
 );
   String? get id => _id;
   String? get code => _code;
@@ -81,6 +88,7 @@ ItemEntity copyWith({  String? id,
   String? get image => _image;
   num? get value => _value;
   List<String>? get attachments => _attachments;
+  String get workingStatus => _workingStatus ?? workingStatusList[0];
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -93,7 +101,10 @@ ItemEntity copyWith({  String? id,
     map['value'] = _value;
     map['image'] = _image;
     map['attachments'] = _attachments;
+    map['working_status'] = _workingStatus;
     return map;
   }
 
 }
+
+const workingStatusList = ['Em funcionamento', 'Parado', 'Com defeito'];

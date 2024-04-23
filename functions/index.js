@@ -280,6 +280,7 @@ exports.postitem = onCall(async (request) => {
     const observations = request.data.observations;
     const attachments = request.data.attachments;
     const image = request.data.image;
+    const workingStatus = request.data.workingStatus;
 
     try {
       const level = await userlevel(companyId, userId);
@@ -295,6 +296,7 @@ exports.postitem = onCall(async (request) => {
           image: image,
           observations: observations,
           attachments: attachments,
+          working_status: workingStatus,
           create_at: Timestamp.now(),
           update_at: Timestamp.now(),
           status: "Na propriedade",
@@ -473,6 +475,7 @@ exports.updateitem = onCall(async (request) => {
     const value = request.data.value;
     const observations = request.data.observations;
     const status = request.data.status;
+    const workingStatus = request.data.workingStatus;
     const ref = getFirestore().collection("items").doc(itemId);
     const item = await ref.get();
 
@@ -485,6 +488,7 @@ exports.updateitem = onCall(async (request) => {
           value: value,
           observations: observations,
           status: status,
+          working_status: workingStatus,
           update_at: Timestamp.now(),
         });
         logger.log("updateitem", "Item atualizado com sucesso");
@@ -498,7 +502,11 @@ exports.updateitem = onCall(async (request) => {
           company_id: item.data()["company_id"],
           item_id: ref.id,
           // eslint-disable-next-line max-len
-          title: `${category.data()["name"]}: ${name} ${barcodeHistory(barcode)}atualizado\n`,
+          title: `${category.data()["name"]}: ${name} ${barcodeHistory(barcode)}atualizado\n
+            ${item.data()["name"]}: ${name}\n${item.data()["code"]}: ${barcode}\n
+            ${item.data()["value"]}: ${value}\n${item.data()["status"]}: ${status}\n
+            ${item.data()["working_status"]}: ${workingStatus}\n
+            ${item.data()["observations"]}: ${observations}\n`,
           email: user.email,
           create_at: Timestamp.now(),
         });

@@ -15,7 +15,8 @@ abstract class ItemRepository {
       double value,
       String observations,
       List<File> attachments,
-      String imagePath
+      String imagePath,
+      String workingStatus
   );
   Future<Either<Failure, bool>> deleteItem(String id);
   Future<Either<Failure, bool>> updateItem(
@@ -25,6 +26,7 @@ abstract class ItemRepository {
       double value,
       String observations,
       String status,
+      String workingStatus
   );
   Future<Either<Failure, String>> addAttachment(
       String companyId,

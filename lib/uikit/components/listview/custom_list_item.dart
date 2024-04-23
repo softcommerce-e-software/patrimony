@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomListItem extends StatelessWidget {
   final String title;
   final String subtitle;
+  final String description;
   final String sufixTitle;
   final String sufixSubtitle;
   final IconData? icon;
@@ -14,6 +15,7 @@ class CustomListItem extends StatelessWidget {
     this.icon,
     this.imageUrl,
     this.subtitle = '',
+    this.description = '',
     this.sufixTitle = '',
     this.sufixSubtitle = '',
     this.onTap,
@@ -56,14 +58,24 @@ class CustomListItem extends StatelessWidget {
                     color: Theme.of(context).primaryColorDark,
                   ),
             ),
-            subtitle != ''
-                ? Text(
-                    subtitle,
-                    style: Theme.of(context).textTheme.bodyMedium?.apply(
-                          color: Theme.of(context).disabledColor,
-                        ),
-                  )
-                : const SizedBox(),
+            Visibility(
+              visible: subtitle != '',
+                child: Text(
+                  subtitle,
+                  style: Theme.of(context).textTheme.bodyMedium?.apply(
+                    color: Theme.of(context).disabledColor,
+                  ),
+                )
+            ),
+            Visibility(
+                visible: description != '',
+                child: Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodyMedium?.apply(
+                    color: Theme.of(context).disabledColor,
+                  ),
+                )
+            ),
           ],
         ),
         trailing: Column(

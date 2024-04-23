@@ -63,6 +63,7 @@ class _ItemsPageState extends AppState<ItemsPage, ItemsStore> {
                       '${store.value[index].code?.isNotEmpty == true
                       ? ' - ${store.value[index].code}' : ''}',
                   subtitle: store.value[index].status ?? "",
+                  description: store.value[index].workingStatus,
                   onTap: () => store.goToItem(store.value[index]),
                 )
             ),

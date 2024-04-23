@@ -16,6 +16,7 @@ class ItemsStore extends AppStoreState<List<ItemEntity>> {
 
   Future<void> getItems(String companyId, String categoryId, bool isReset) async {
     if (isReset) {
+      value = [];
       page = 1;
       stop = false;
     }

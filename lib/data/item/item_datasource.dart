@@ -13,7 +13,8 @@ abstract class ItemDataSource {
       double value,
       String observations,
       List<File> attachments,
-      String imagePath
+      String imagePath,
+      String workingStatus
   );
   Future<bool> deleteItem(String id);
   Future<bool> updateItem(
@@ -23,6 +24,7 @@ abstract class ItemDataSource {
       double value,
       String observations,
       String status,
+      String workingStatus
   );
   Future<String> addAttachment(
       String companyId,

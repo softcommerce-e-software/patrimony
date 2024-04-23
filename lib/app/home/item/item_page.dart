@@ -24,6 +24,7 @@ class _ItemPageState extends AppState<ItemPage, ItemStore> {
   final TextEditingController _valueController = TextEditingController();
   final TextEditingController _observationsController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
+  final TextEditingController _workingStatusController = TextEditingController();
   final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter(
       decimalDigits: 2,
       locale: 'pt_BR',
@@ -41,6 +42,7 @@ class _ItemPageState extends AppState<ItemPage, ItemStore> {
     _valueController.text = widget.entity.value?.toString() ?? "";
     _observationsController.text = widget.entity.code ?? "";
     _statusController.text = widget.entity.status ?? "";
+    _workingStatusController.text = widget.entity.workingStatus;
 
     _nameController.addListener(() {
       _showButton();
@@ -80,7 +82,7 @@ class _ItemPageState extends AppState<ItemPage, ItemStore> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomDynamicAppBar(
-        title: store.value.code ?? "",
+        title: store.value.name ?? "",
         items: [],
       ),
       body: _screen(),
@@ -177,6 +179,20 @@ class _ItemPageState extends AppState<ItemPage, ItemStore> {
                       },
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: CustomDropDown(
+                      value: _workingStatusController.text,
+                      labelText: 'Estado de funcionamento',
+                      enabled: true,
+                      hintText: workingStatusList[0],
+                      items: workingStatusList,
+                      onSelected: (String? value) =>
+                      {
+                        _workingStatusController.text = value ?? ""
+                      },
+                    ),
+                  ),
                   CustomMessageField(
                     controller: _observationsController,
                     labelText: 'Observações',
@@ -233,6 +249,7 @@ class _ItemPageState extends AppState<ItemPage, ItemStore> {
                           _formatter.getUnformattedValue().toDouble(),
                           _observationsController.text,
                           _statusController.text,
+                          _workingStatusController.text
                         );
                         _showButton();
                       },
