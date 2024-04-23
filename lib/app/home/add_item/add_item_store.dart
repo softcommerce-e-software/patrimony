@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:asuka/snackbars/asuka_snack_bar.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:patrimony/domain/company/post_item_usecase.dart';
-import 'package:patrimony/domain/utils/app_state.dart';
+import 'package:patrimony/domain/item/post_item_usecase.dart';
+import 'package:patrimony/domain/utils/app_store_state.dart';
 
-class AddItemStoreStore extends AppState<bool> {
+class AddItemStoreStore extends AppStoreState<bool> {
   final PostItemUseCase _useCase;
 
   AddItemStoreStore(this._useCase) : super(true);

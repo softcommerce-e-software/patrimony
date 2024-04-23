@@ -4,18 +4,22 @@ import 'package:patrimony/uikit/components/buttons/custom_button.dart';
 import 'package:patrimony/uikit/components/inputs/custom_message_field.dart';
 import 'package:patrimony/uikit/mockup/icons_list.dart';
 
-void showCustomModal(String title, Function(String) callback) {
+void showCustomModal({
+  required String title, required Function(String) callback, String? label
+}) {
   Asuka.showDialog(builder: (context) =>
-      CustomModalForm(title: title, callback: callback)
+      CustomModalForm(title: title, callback: callback, label: label ?? '',)
   );
 }
 
 class CustomModalForm extends StatefulWidget {
   final void Function(String) callback;
   final String title;
+  final String label;
 
   const CustomModalForm({
-    super.key, required this.callback, required this.title
+    super.key, required this.callback, required this.title,
+    required this.label
   });
 
   @override
@@ -25,6 +29,12 @@ class CustomModalForm extends StatefulWidget {
 class _CustomModalFormState extends State<CustomModalForm> {
   final IconData _icon = IconsList.flutterIcons[0];
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    _controller.text = widget.label;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +60,7 @@ class _CustomModalFormState extends State<CustomModalForm> {
           isDisable: _controller.text.isEmpty,
           textColor: Theme.of(context).primaryColorLight,
           onPressed: () {
-            widget.callback.call(_controller.text);
+            widget.callback.call(_controller.text.trim());
             Navigator.pop(context);
           },
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class BottomViewPage extends StatefulWidget {
-  const BottomViewPage({Key? key}) : super(key: key);
+  const BottomViewPage({super.key});
 
   @override
   createState() => _BottomViewPageState();

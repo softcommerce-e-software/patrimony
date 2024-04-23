@@ -1,6 +1,7 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -24,11 +25,21 @@ Future<void> _firebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(
-    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest,
-  );
+
+  var appCheck = FirebaseAppCheck.instance;
+  if (kDebugMode) {
+    await appCheck.activate(
+      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.debug,
+    );
+  } else {
+    await appCheck.activate(
+      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+      androidProvider: AndroidProvider.playIntegrity,
+      appleProvider: AppleProvider.appAttest,
+    );
+  }
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setDefaults({});
   await remoteConfig.fetchAndActivate();

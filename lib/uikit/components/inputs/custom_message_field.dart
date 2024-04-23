@@ -17,6 +17,8 @@ class CustomMessageField extends StatefulWidget {
   final bool enabled;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChanged;
+  final IconData? icon;
+  final Function? iconPress;
 
   const CustomMessageField({
     super.key,
@@ -32,6 +34,8 @@ class CustomMessageField extends StatefulWidget {
     this.labelText,
     this.validator,
     this.padding, this.maxLines, this.onChanged, this.enabled = true,
+    this.icon,
+    this.iconPress,
   });
 
   @override
@@ -114,6 +118,13 @@ class _CustomMessageFieldState extends State<CustomMessageField> {
               errorBorder: _defaultBorder,
               focusedErrorBorder: _defaultBorder,
               disabledBorder: _defaultBorder,
+              suffixIcon: Visibility(
+                visible: widget.icon != null,
+                child: InkWell(
+                  onTap: () => widget.iconPress?.call(),
+                    child: Icon(widget.icon)
+                ),
+              ),
             ),
           ),
         ),

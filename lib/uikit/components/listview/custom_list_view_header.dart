@@ -37,14 +37,17 @@ class CustomListViewHeader extends StatelessWidget {
               ),
         ),
         const Spacer(),
-        InkWell(
-          onTap: onTap,
-          child: Text(
-            'Adicionar',
-            style: Theme.of(context).textTheme.bodyMedium?.apply(
-                  color: Theme.of(context).primaryColorDark,
-                ),
-          ),
+        Visibility(
+          visible: onTap != null,
+          child: InkWell(
+            onTap: onTap,
+            child: Text(
+              'Adicionar',
+              style: Theme.of(context).textTheme.bodyMedium?.apply(
+                color: Theme.of(context).primaryColorDark,
+              ),
+            ),
+          )
         ),
       ],
     );

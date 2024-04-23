@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:patrimony/domain/company/company_repository.dart';
+import 'package:patrimony/domain/item/item_repository.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 
 mixin _UseCase {
@@ -7,7 +7,7 @@ mixin _UseCase {
 }
 
 class DeleteItemUseCase implements _UseCase {
-  final CompanyRepository _repository;
+  final ItemRepository _repository;
 
   DeleteItemUseCase(this._repository);
 

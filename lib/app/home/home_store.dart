@@ -3,9 +3,9 @@ import 'package:patrimony/domain/company/get_companies_usecase.dart';
 import 'package:patrimony/domain/utils/dartz_either_adapter.dart';
 import 'package:patrimony/entity/company_entity.dart';
 
-import '../../domain/utils/app_state.dart';
+import '../../domain/utils/app_store_state.dart';
 
-class HomeStore extends AppState<List<CompanyEntity>> {
+class HomeStore extends AppStoreState<List<CompanyEntity>> {
   final GetCompaniesUseCase _useCase;
   HomeStore(this._useCase) : super([]);
 

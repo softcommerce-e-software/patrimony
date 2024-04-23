@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:patrimony/app/login/login_store.dart';
-import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/uikit/components/base/app_scoped_builder.dart';
 import 'package:patrimony/uikit/components/buttons/custom_image_button.dart';
 import 'package:patrimony/uikit/ui_ext.dart';
@@ -18,30 +17,25 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    super.initState();
     _verifyLoggedUser();
+    super.initState();
   }
 
   void _verifyLoggedUser() {
+    _store.addListener(() {
+      if (_store.value) {
+        Modular.to.pushReplacementNamed('/bottom_view/home', forRoot: true);
+      }
+    });
     _store.isLogged();
-    _store.observer(
-      onState: (state) {
-        if (state) {
-          Modular.to.pushReplacementNamed('/bottom_view/home', forRoot: true);
-        }
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppScopedBuilder<LoginStore, Failure, bool>(
+      body: AppScopedBuilder(
         store: _store,
-        onState: (_, result) {
-          return _screen();
-        },
-        onError: (_, e) => _screen(),
+        child: _screen(),
       ),
     );
   }

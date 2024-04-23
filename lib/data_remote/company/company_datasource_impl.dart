@@ -1,21 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:patrimony/data/company/company_datasource.dart';
 import 'package:patrimony/domain/utils/errors.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
 import 'package:patrimony/entity/company_entity.dart';
 import 'package:patrimony/entity/history_entity.dart';
-import 'package:patrimony/entity/item_entity.dart';
 import 'package:patrimony/entity/user_entity.dart';
 
 class CompanyDataSourceImpl implements CompanyDataSource {
-  CompanyDataSourceImpl(this._functions, this._storage);
+  CompanyDataSourceImpl(this._functions);
 
   final FirebaseFunctions _functions;
-  final FirebaseStorage _storage;
 
   @override
   Future<List<CompanyEntity>> getCompanies() async {
@@ -23,9 +19,6 @@ class CompanyDataSourceImpl implements CompanyDataSource {
       var response = await _functions
           .httpsCallable(
             'getcompanies',
-            options: HttpsCallableOptions(
-              limitedUseAppCheckToken: false,
-            ),
           )
           .call();
       return listCompanyEntityFromJson(response.data);
@@ -36,15 +29,12 @@ class CompanyDataSourceImpl implements CompanyDataSource {
   }
 
   @override
-  Future<List<HistoryEntity>> getHistory(String companyId) async {
+  Future<List<HistoryEntity>> getHistory(String companyId, int page) async {
     try {
       var response = await _functions
           .httpsCallable(
-        'gethistory',
-        options: HttpsCallableOptions(
-          limitedUseAppCheckToken: true,
-        ),
-      ).call({'companyId': companyId});
+        'gethistoryapp',
+      ).call({'id': companyId, 'page': page});
       return listHistoryEntityFromJson(response.data);
     } catch (e) {
       throw RemoteFailure();
@@ -65,23 +55,6 @@ class CompanyDataSourceImpl implements CompanyDataSource {
   }
 
   @override
-  Future<List<ItemEntity>> getItems(String companyId, String categoryId) async {
-    try {
-      var response = await _functions
-          .httpsCallable(
-        'getitems',
-        options: HttpsCallableOptions(
-          limitedUseAppCheckToken: false,
-        ),
-      )
-          .call({'companyId': companyId, 'categoryId': categoryId});
-      return listItemEntityFromJson(response.data);
-    } catch (e) {
-      throw RemoteFailure();
-    }
-  }
-
-  @override
   Future<List<CommonValueEntity>> getTypes(String id) async {
     try {
       var response = await _functions
@@ -96,20 +69,6 @@ class CompanyDataSourceImpl implements CompanyDataSource {
     } catch (e) {
       throw RemoteFailure();
     }
-  }
-
-  @override
-  Future<ItemEntity> searchItem(String code, String companyId) async {
-    throw RemoteFailure();
-    // try {
-    //   var response = await _db
-    //       .from(_ITEMS_VIEW)
-    //       .select()
-    //       .eq('code', code);
-    //   return response.map((e) => ItemEntity.fromJson(e)).firstOrNull;
-    // } catch (_) {
-    //   throw RemoteFailure();
-    // }
   }
 
   @override
@@ -130,53 +89,6 @@ class CompanyDataSourceImpl implements CompanyDataSource {
   }
 
   @override
-  Future<bool> postItem(
-      String companyId,
-      String categoryId,
-      String name,
-      String barcode,
-      double value,
-      String observations,
-      List<File> attachments,
-      String imagePath
-  ) async {
-    try {
-      var futureAttachmentsUrls = attachments.map((e) async {
-        var ref = _storage.ref().child('invoices/$companyId/$categoryId/'
-            '${DateTime.now().millisecondsSinceEpoch}.jpg');
-        await ref.putFile(e);
-        var url = await ref.getDownloadURL();
-        return url;
-      });
-      var attachmentsUrls = await Future.wait(futureAttachmentsUrls);
-
-      var imageUrl = "";
-     if (imagePath.isNotEmpty) {
-       var ref = _storage.ref().child('item/$companyId/$categoryId/'
-           '${DateTime.now().millisecondsSinceEpoch}.jpg');
-       await ref.putFile(File(imagePath));
-       imageUrl = await ref.getDownloadURL();
-     }
-
-      var response = await _functions.httpsCallable(
-        'postitem',
-        options: HttpsCallableOptions(limitedUseAppCheckToken: false,),
-      ).call({
-        'companyId': companyId,
-        'categoryId': categoryId,
-        'name': name,
-        'barcode': barcode,
-        'value': value,
-        'observations': observations,
-        'attachments': attachmentsUrls,
-        'image': imageUrl
-      });
-      return jsonDecode(response.data)['success'];
-    } catch (e) {
-      throw RemoteFailure();
-    }
-  }
-
   Future<bool> postCategory(String companyId, String name) async {
     try {
       var response = await _functions.httpsCallable(
@@ -193,15 +105,14 @@ class CompanyDataSourceImpl implements CompanyDataSource {
   }
 
   @override
-  Future<bool> deleteItem(String id) async {
+  Future<bool> updateCategory(String id, String name) async {
     try {
-      var response = await _functions
-          .httpsCallable(
-        'deleteitem',
-        options: HttpsCallableOptions(
-          limitedUseAppCheckToken: false,
-        ),
-      ).call({'id': id});
+      var response = await _functions.httpsCallable(
+        'updatecategory',
+      ).call({
+        'id': id,
+        'name': name,
+      });
       return jsonDecode(response.data)['success'];
     } catch (e) {
       throw RemoteFailure();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patrimony/uikit/components/listview/custom_list_view_header.dart';
+import 'package:patrimony/utils/scroll_ext.dart';
 
 class CustomListView extends StatefulWidget {
   final int itemCount;
@@ -7,11 +8,13 @@ class CustomListView extends StatefulWidget {
   final String title;
   final IconData icon;
   final GestureTapCallback? onAdd;
+  final Function? onFinalScroll;
 
   const CustomListView({
     super.key,
     required this.itemCount,
-    required this.child, required this.title, required this.icon, this.onAdd,
+    required this.child, required this.title, required this.icon,
+    this.onAdd, this.onFinalScroll,
   });
 
   @override
@@ -20,6 +23,15 @@ class CustomListView extends StatefulWidget {
 
 class _CustomListViewState extends State<CustomListView> {
   final double _defaultPadding = 16.0;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _scrollController.onFinalScroll(
+        call: () => widget.onFinalScroll?.call()
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,29 +71,12 @@ class _CustomListViewState extends State<CustomListView> {
           ),
           Flexible(
             child: ListView.separated(
+              controller: _scrollController,
               itemCount: widget.itemCount,
               separatorBuilder: (_, __) => const Divider(height: 0),
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return widget.child(index);
-                // return Slidable(
-                //   controller: slidableController,
-                //   actionPane: const SlidableStrechActionPane(),
-                //   secondaryActions: [
-                //     const SizedBox(width: 8),
-                //     IconSlideAction(
-                //       color: Theme.of(context).primaryColor,
-                //       foregroundColor: Theme.of(context).colorScheme.primary,
-                //       icon: Icons.edit,
-                //     ),
-                //     IconSlideAction(
-                //       color: Theme.of(context).colorScheme.error,
-                //       foregroundColor: Theme.of(context).primaryColorLight,
-                //       icon: Icons.delete,
-                //     ),
-                //   ],
-                //   child: widget.child,
-                // );
               },
             ),
           ),

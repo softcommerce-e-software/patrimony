@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:patrimony/domain/company/company_repository.dart';
 import 'package:patrimony/domain/utils/errors.dart';
+
+import 'item_repository.dart';
 
 mixin _UseCase {
   Future<Either<Failure, bool>> call(
@@ -18,7 +19,7 @@ mixin _UseCase {
 }
 
 class PostItemUseCase implements _UseCase {
-  final CompanyRepository _repository;
+  final ItemRepository _repository;
 
   PostItemUseCase(this._repository);
 

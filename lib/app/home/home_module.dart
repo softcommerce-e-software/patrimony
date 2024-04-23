@@ -14,16 +14,25 @@ import 'package:patrimony/app/home/items/items_page.dart';
 import 'package:patrimony/app/home/items/items_store.dart';
 import 'package:patrimony/app/home/types/types_page.dart';
 import 'package:patrimony/app/home/types/types_store.dart';
-import 'package:patrimony/domain/company/delete_item_usecase.dart';
+import 'package:patrimony/data/item/item_datasource.dart';
+import 'package:patrimony/data/item/item_repository_impl.dart';
+import 'package:patrimony/data_remote/company/item_datasource_impl.dart';
 import 'package:patrimony/domain/company/get_companies_usecase.dart';
 import 'package:patrimony/domain/company/get_conservation_states_usecase.dart';
 import 'package:patrimony/domain/company/get_history_usecase.dart';
-import 'package:patrimony/domain/company/get_itens_usecase.dart';
 import 'package:patrimony/domain/company/get_types_usecase.dart';
 import 'package:patrimony/domain/company/get_users_usecase.dart';
 import 'package:patrimony/domain/company/post_category_usecase.dart';
-import 'package:patrimony/domain/company/post_item_usecase.dart';
-import 'package:patrimony/domain/company/search_item_usecase.dart';
+import 'package:patrimony/domain/company/update_category_usecase.dart';
+import 'package:patrimony/domain/item/add_attachment_item_usecase.dart';
+import 'package:patrimony/domain/item/add_photo_item_usecase.dart';
+import 'package:patrimony/domain/item/delete_attachment_item_usecase.dart';
+import 'package:patrimony/domain/item/delete_item_usecase.dart';
+import 'package:patrimony/domain/item/delete_photo_item_usecase.dart';
+import 'package:patrimony/domain/item/get_itens_usecase.dart';
+import 'package:patrimony/domain/item/item_repository.dart';
+import 'package:patrimony/domain/item/post_item_usecase.dart';
+import 'package:patrimony/domain/item/update_item_usecase.dart';
 
 import 'item/item_store.dart';
 
@@ -31,20 +40,28 @@ class HomeModule extends Module {
 
   @override
   void binds(Injector i) {
+    i.addLazySingleton<ItemRepository>(ItemRepositoryImpl.new);
+    i.addLazySingleton<ItemDataSource>(ItemDataSourceImpl.new);
+
     i.add(PostItemUseCase.new);
     i.add(GetConservationStatesUseCase.new);
     i.add(GetCompaniesUseCase.new);
     i.add(GetTypesUseCase.new);
-    i.add(SearchItemUseCase.new);
     i.add(GetUsersUseCase.new);
     i.add(GetItemsUseCase.new);
     i.add(PostCategoryUseCase.new);
+    i.add(UpdateItemUseCase.new);
     i.add(DeleteItemUseCase.new);
     i.add(HomeStore.new);
     i.add(TypesStore.new);
     i.add(ItemsStore.new);
     i.add(ItemStore.new);
     i.add(AddItemStoreStore.new);
+    i.add(AddAttachmentItemUseCase.new);
+    i.add(AddPhotoItemUseCase.new);
+    i.add(DeleteAttachmentItemUseCase.new);
+    i.add(DeletePhotoItemUseCase.new);
+    i.add(UpdateCategoryUseCase.new);
 
     i.add(GetHistoryUseCase.new);
     i.add(HistoryStore.new);
