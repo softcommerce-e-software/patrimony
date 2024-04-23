@@ -6,11 +6,13 @@ class CustomListItem extends StatelessWidget {
   final String sufixTitle;
   final String sufixSubtitle;
   final IconData? icon;
+  final String? imageUrl;
   final VoidCallback? onTap;
 
   const CustomListItem({
     super.key,
     this.icon,
+    this.imageUrl,
     this.subtitle = '',
     this.sufixTitle = '',
     this.sufixSubtitle = '',
@@ -25,13 +27,25 @@ class CustomListItem extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         contentPadding: EdgeInsets.zero,
-        leading: icon != null
-            ? Icon(
+        leading: icon != null || imageUrl?.trim().isNotEmpty == true ? Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Visibility(
+              visible: icon != null,
+              child: Icon(
                 icon,
                 color: Theme.of(context).primaryColorDark,
                 size: 30,
               )
-            : null,
+            ),
+            Visibility(
+                visible: imageUrl?.trim().isNotEmpty == true,
+                child: Image.network(
+                  imageUrl ?? '',
+                )
+            )
+          ],
+        ) : null,
         title: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -58,6 +58,7 @@ class _ItemsPageState extends AppState<ItemsPage, ItemsStore> {
                     widget.categoryEntity.id!
                 ),
                 child: (index) => CustomListItem(
+                  imageUrl: store.value[index].image,
                   title: '${store.value[index].name}'
                       '${store.value[index].code?.isNotEmpty == true
                       ? ' - ${store.value[index].code}' : ''}',
