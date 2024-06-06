@@ -10,6 +10,7 @@ import 'package:patrimony/uikit/components/listview/custom_list_item.dart';
 import 'package:patrimony/uikit/components/listview/custom_list_view.dart';
 import 'package:patrimony/uikit/ui_ext.dart';
 
+
 class ItemsPage extends StatefulWidget {
   final CompanyEntity companyEntity;
   final CommonValueEntity categoryEntity;
@@ -20,7 +21,6 @@ class ItemsPage extends StatefulWidget {
 }
 
 class _ItemsPageState extends AppState<ItemsPage, ItemsStore> {
-
   Future<void> _getItems(bool isReset) async {
     await store.getItems(widget.companyEntity.id ?? "", widget.categoryEntity.id ?? "", isReset);
   }
@@ -37,37 +37,42 @@ class _ItemsPageState extends AppState<ItemsPage, ItemsStore> {
       appBar: CustomDynamicAppBar(
         title: widget.categoryEntity.name ?? "",
           items: [
-            MenuItem("Editar Categoria", () => store.editCategory(widget.categoryEntity))
+            MenuItem("Editar Categoria", () => store.editCategory(widget.categoryEntity)),
+            MenuItem("Relatório", () => store.goToReport(widget.companyEntity, widget.categoryEntity))
           ]
       ),
       body: SafeArea(
-        child: AppScopedBuilder(
-          store: store,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 32.0
+        child: _screen(),
+      ),
+    );
+  }
+
+  Widget _screen() {
+    return AppScopedBuilder(
+      store: store,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 32.0
+        ),
+        child: CustomListView(
+            onFinalScroll: () => _getItems(false),
+            itemCount: store.value.length,
+            title: 'Itens',
+            icon: Icons.format_list_bulleted,
+            onAdd: () => store.goToAddItem(
+                widget.companyEntity.id!,
+                widget.categoryEntity.id!
             ),
-            child: CustomListView(
-                onFinalScroll: () => _getItems(false),
-                itemCount: store.value.length,
-                title: 'Itens',
-                icon: Icons.format_list_bulleted,
-                onAdd: () => store.goToAddItem(
-                    widget.companyEntity.id!,
-                    widget.categoryEntity.id!
-                ),
-                child: (index) => CustomListItem(
-                  imageUrl: store.value[index].image,
-                  title: '${store.value[index].name}'
-                      '${store.value[index].code?.isNotEmpty == true
-                      ? ' - ${store.value[index].code}' : ''}',
-                  subtitle: store.value[index].status ?? "",
-                  description: store.value[index].workingStatus,
-                  onTap: () => store.goToItem(store.value[index]),
-                )
-            ),
-          ),
+            child: (index) => CustomListItem(
+              imageUrl: store.value[index].image,
+              title: '${store.value[index].name}'
+                  '${store.value[index].code?.isNotEmpty == true
+                  ? ' - ${store.value[index].code}' : ''}',
+              subtitle: store.value[index].status ?? "",
+              description: store.value[index].workingStatus,
+              onTap: () => store.goToItem(store.value[index]),
+            )
         ),
       ),
     );

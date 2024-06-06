@@ -12,6 +12,7 @@ import 'package:patrimony/app/home/home_store.dart';
 import 'package:patrimony/app/home/item/item_page.dart';
 import 'package:patrimony/app/home/items/items_page.dart';
 import 'package:patrimony/app/home/items/items_store.dart';
+import 'package:patrimony/app/home/items/save_report/report_page.dart';
 import 'package:patrimony/app/home/types/types_page.dart';
 import 'package:patrimony/app/home/types/types_store.dart';
 import 'package:patrimony/data/item/item_datasource.dart';
@@ -77,6 +78,11 @@ class HomeModule extends Module {
         ChildRoute('/items', child: (_) => ItemsPage(
             companyEntity: r.args.data['company'],
             categoryEntity: r.args.data['category']
+        ),),
+        ChildRoute('/items/report', child: (_) => SaveReportPage(
+            companyEntity: r.args.data['company'],
+            categoryEntity: r.args.data['category'],
+            items: r.args.data['items'],
         ),),
         ChildRoute('/item', child: (_) => ItemPage(entity: r.args.data),),
         ChildRoute('/add_item', child: (_) => AddItemPage(

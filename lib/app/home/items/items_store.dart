@@ -3,6 +3,7 @@ import 'package:patrimony/domain/company/update_category_usecase.dart';
 import 'package:patrimony/domain/item/get_itens_usecase.dart';
 import 'package:patrimony/domain/utils/app_store_state.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
+import 'package:patrimony/entity/company_entity.dart';
 import 'package:patrimony/entity/item_entity.dart';
 import 'package:patrimony/uikit/components/modal/custom_modal_form.dart';
 
@@ -75,5 +76,18 @@ class ItemsStore extends AppStoreState<List<ItemEntity>> {
       );
       setLoading(false);
     });
+  }
+
+  void goToReport(CompanyEntity companyEntity, CommonValueEntity categoryEntity) async {
+    Modular.to
+        .pushNamed(
+        '/bottom_view/home/items/report',
+        arguments: {
+          'company': companyEntity,
+          'category': categoryEntity,
+          'items': value
+        },
+        forRoot: true
+    );
   }
 }
