@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:patrimony/app/home/add_item/add_item_store.dart';
 import 'package:patrimony/entity/item_entity.dart';
 import 'package:patrimony/uikit/components/appBar/custom_dynamic_app_bar.dart';

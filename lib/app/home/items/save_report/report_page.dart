@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'dart:ui' as ui;
+
+import 'package:collection/collection.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
@@ -22,7 +23,6 @@ class SaveReportPage extends StatefulWidget {
 
 class _SaveReportPageState extends State<SaveReportPage> {
   final GlobalKey _boundaryKey = GlobalKey();
-  Uint8List _imageBytes = Uint8List(0);
   final _valueFormatter = CurrencyTextInputFormatter(
       decimalDigits: 2,
       locale: 'pt_BR',
@@ -54,6 +54,7 @@ class _SaveReportPageState extends State<SaveReportPage> {
         key: _boundaryKey,
         child: Container(
           color: Colors.white,
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -132,8 +133,12 @@ class _SaveReportPageState extends State<SaveReportPage> {
       ui.Image? image = await boundary?.toImage(pixelRatio: 3.0);
       ByteData? byteData =
       await image?.toByteData(format: ui.ImageByteFormat.png);
+      var file = XFile.fromData(
+          byteData!.buffer.asUint8List(),
+          mimeType: 'image/png',
+      );
 
-      Share.shareXFiles([XFile.fromData(byteData!.buffer.asUint8List())]);
+      Share.shareXFiles([file]);
     } catch (e) {
       print(e);
     }
