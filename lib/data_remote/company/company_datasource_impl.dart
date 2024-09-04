@@ -19,11 +19,9 @@ class CompanyDataSourceImpl implements CompanyDataSource {
       var response = await _functions
           .httpsCallable(
             'getcompanies',
-          )
-          .call();
+          ).call();
       return listCompanyEntityFromJson(response.data);
     } catch (e) {
-      print(e);
       throw RemoteFailure();
     }
   }

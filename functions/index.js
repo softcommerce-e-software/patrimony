@@ -8,6 +8,7 @@ const {initializeApp} = require("firebase-admin/app");
 const {getFirestore, Timestamp, FieldValue} = require("firebase-admin/firestore");
 const {getAuth} = require("firebase-admin/auth");
 const {getStorage} = require("firebase-admin/storage");
+const admin = require("firebase-admin");
 
 initializeApp();
 const bucket = getStorage().bucket();
@@ -31,6 +32,14 @@ const barcodeHistory = (barcode) => {
   if (barcode != null && barcode != undefined && barcode.trim() != "") {
     result = `- ${barcode} `;
   }
+  return result;
+};
+
+const inReview = async () => {
+  const template = await admin.remoteConfig().getTemplate();
+  const defaultValue = template.parameters["review"].defaultValue.value;
+  const result = defaultValue == true || defaultValue == "true";
+  logger.log("inReview", result);
   return result;
 };
 
@@ -61,31 +70,53 @@ exports.getcompanies = onCall(async (request) => {
     accessResponse.forEach((doc) => {
       access.push(doc.data());
     });
-
-    const companyResponse = await getFirestore()
-        .collection("companies")
-        .where("id", "in", companiesId.map((doc) => doc.company))
-        .orderBy("name")
-        .get();
     const companies = [];
-    companyResponse.forEach((doc) => {
-      companies.push(
-          {
-            id: doc.data().id,
-            name: doc.data().name,
-            // eslint-disable-next-line max-len
-            access: access.filter((access) => access.id == companiesId.filter((it) => it.company == doc.data().id)[0].access),
-          },
-      );
-    });
+    if (companies.length > 0) {
+      const companyResponse = await getFirestore()
+          .collection("companies")
+          .where("id", "in", companiesId.map((doc) => doc.company))
+          .orderBy("name")
+          .get();
+      companyResponse.forEach((doc) => {
+        companies.push(
+            {
+              id: doc.data().id,
+              name: doc.data().name,
+              // eslint-disable-next-line max-len
+              access: access.filter((access) => access.id == companiesId.filter((it) => it.company == doc.data().id)[0].access),
+            },
+        );
+      });
+    }
     logger.log("getCompanies", "Busca de empresas com sucesso");
-    return JSON.stringify(companies);
+
+    if (companies.length == 0 && await inReview()) {
+      const company = await getFirestore()
+          .collection("companies")
+          .doc("tbbxmuFV79C5WU3MPt9y")
+          .get();
+      const data = company.data();
+      logger.log("testDocument", JSON.stringify(data));
+      return JSON.stringify([
+        {
+          id: data.id,
+          name: data.name,
+          access: access.filter((access) => access.id == "GuQLYo7uQfujt77Q33Lr"), // Gerencia
+        },
+      ]);
+    } else {
+      return JSON.stringify(companies);
+    }
   } else {
     return "";
   }
 });
 
 const userlevel = async (companyId, userId) => {
+  if (companyId == "tbbxmuFV79C5WU3MPt9y" && await inReview()) {
+    return 1; // retonar nível gerencia
+  }
+
   const userLevel = await getFirestore()
       .collection("company_user")
       .where("company_id", "==", companyId)
