@@ -2,7 +2,7 @@ name: patrimony
 description: A new Flutter project.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+7
+version: 1.0.0+2
 
 environment:
   sdk: ">=3.0.6 <4.0.0"
@@ -69,3 +69,5 @@ vars:
 scripts:
   mobx_build: $runner build --delete-conflicting-outputs
   mobx_watch: $runner watch --delete-conflicting-outputs
+  build-ios: flutter build ipa --obfuscate --split-debug-info=/Users/marlonsodre/Develop.nosync/Flutter.nosync/my_bible/ofuscate
+  build-android: flutter build appbundle --obfuscate --split-debug-info=/Users/marlonsodre/Develop.nosync/Flutter.nosync/my_bible/ofuscate

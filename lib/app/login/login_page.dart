@@ -45,12 +45,16 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'PATRIMÔNIO'.toUpperCase(),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              'Equipamentos da Central'.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+            ),
           ),
           Text(
             'BEM-VINDO',
@@ -61,17 +65,17 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 10.heightPercent,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.widthPercent),
-            child: CustomImageButton(
-              onPressed: () => _store.login(),
-              background: Theme.of(context).primaryColorDark,
-              textColor: Theme.of(context).primaryColorLight,
-              iconPath: 'assets/icon/ic_white_apple.webp',
-              buttonText: 'Sign in with Apple',
-            ),
-          ),
-          const SizedBox(height: 12),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 10.widthPercent),
+          //   child: CustomImageButton(
+          //     onPressed: () => _store.login(),
+          //     background: Theme.of(context).primaryColorDark,
+          //     textColor: Theme.of(context).primaryColorLight,
+          //     iconPath: 'assets/icon/ic_white_apple.webp',
+          //     buttonText: 'Sign in with Apple',
+          //   ),
+          // ),
+          // const SizedBox(height: 12),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.widthPercent),
             child: CustomImageButton(

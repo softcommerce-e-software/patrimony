@@ -1,4 +1,4 @@
-package com.sodremr.patrimony
+package com.sodremr.central.patrimony
 
 import android.content.Context
 import androidx.multidex.MultiDex
