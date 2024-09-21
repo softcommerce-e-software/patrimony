@@ -2,9 +2,10 @@ import 'dart:ui' as ui;
 
 import 'package:collection/collection.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:patrimony/entity/common_value_entity.dart';
 import 'package:patrimony/entity/company_entity.dart';
 import 'package:patrimony/entity/item_entity.dart';
@@ -35,7 +36,8 @@ class _SaveReportPageState extends State<SaveReportPage> {
       appBar: CustomDynamicAppBar(
           title: widget.categoryEntity.name ?? "",
           items: [
-            MenuItem("Enviar relatório", () => _capturePng())
+            MenuItem("Enviar relatório via imagem", () => _capturePng()),
+            MenuItem("Enviar relatório via texto", () => _captureText())
           ]
       ),
       backgroundColor: Colors.white,
@@ -139,8 +141,45 @@ class _SaveReportPageState extends State<SaveReportPage> {
       );
 
       Share.shareXFiles([file]);
-    } catch (e) {
-      print(e);
+    } catch (e, s) {
+      if (!kDebugMode) {
+        FirebaseCrashlytics.instance.recordError(e, s);
+      }
+    }
+  }
+
+  Future<void> _captureText() async {
+    try {
+      var text = '${widget.companyEntity.name}\n\n';
+      text += 'Categoria: ${widget.categoryEntity.name}\n';
+      text += '  Quantidade: ${widget.items.length}\n';
+      text += '  Valor Total: ${_valueFormatter.formatDouble(widget.items.map((e) => e.value ?? 0).toList().sum.toDouble())}\n';
+      text += '  Itens:\n';
+
+      var statusList = widget.items.map((e) => e.status).toSet();
+      for (var i = 0; i < statusList.length; i++) {
+        var status = statusList.elementAt(i);
+        var itemsInStatus = widget.items.where((element) => element.status == status);
+        var workingStatusList = itemsInStatus.map((e) => e.workingStatus).toSet();
+        text += '    * ${status ?? 'Sem status definido'}\n';
+
+        for (var i = 0; i < workingStatusList.length; i++) {
+          var workingStatus = workingStatusList.elementAt(i);
+          var itemsInWorkingStatus = itemsInStatus.where((element) => element.workingStatus == workingStatus);
+          text += '      - $workingStatus\n';
+
+          for (var i = 0; i < itemsInWorkingStatus.length; i++) {
+            var item = itemsInWorkingStatus.elementAt(i);
+            text += '        * ${item.name} - ${_valueFormatter.formatDouble(item.value?.toDouble() ?? 0.0)}\n';
+          }
+        }
+      }
+
+      Share.share(text);
+    } catch (e, s) {
+      if (!kDebugMode) {
+        FirebaseCrashlytics.instance.recordError(e, s);
+      }
     }
   }
 }
