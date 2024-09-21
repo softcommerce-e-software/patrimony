@@ -61,6 +61,7 @@ exports.getcompanies = onCall(async (request) => {
           },
       );
     });
+    logger.log("companiesId", JSON.stringify(companiesId));
 
     const accessResponse = await getFirestore()
         .collection("access_level")
@@ -70,8 +71,9 @@ exports.getcompanies = onCall(async (request) => {
     accessResponse.forEach((doc) => {
       access.push(doc.data());
     });
+    logger.log("access", JSON.stringify(access));
     const companies = [];
-    if (companies.length > 0) {
+    if (companiesId.length > 0) {
       const companyResponse = await getFirestore()
           .collection("companies")
           .where("id", "in", companiesId.map((doc) => doc.company))
@@ -88,6 +90,7 @@ exports.getcompanies = onCall(async (request) => {
         );
       });
     }
+    logger.log("companies", JSON.stringify(companies));
     logger.log("getCompanies", "Busca de empresas com sucesso");
 
     if (companies.length == 0 && await inReview()) {
