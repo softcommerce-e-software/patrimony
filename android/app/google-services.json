@@ -14,6 +14,38 @@
       },
       "oauth_client": [
         {
+          "client_id": "1041526288855-e8v6uq2udfp01ht2g6vm25pdl2790s4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.central.patrimony",
+            "certificate_hash": "f571d8d71c3a0e44bdad241c807c6458a84a7757"
+          }
+        },
+        {
+          "client_id": "1041526288855-h8no2cfp0amj8bjhofj7v0pgqn80cjng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.central.patrimony",
+            "certificate_hash": "cbcab9103613b0992c55f461e42c8315723ea97b"
+          }
+        },
+        {
+          "client_id": "1041526288855-ime5g7nansp76gq2eaum8r4965fr1ir4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.central.patrimony",
+            "certificate_hash": "96e7cb67fb593203d12ddf4eee32b77bfce45c5b"
+          }
+        },
+        {
+          "client_id": "1041526288855-lteq3r1t5oqcgcj4noebmh2j41e47jr9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sodremr.central.patrimony",
+            "certificate_hash": "f8add14d4dcb3a366626ab187db2077c7884da27"
+          }
+        },
+        {
           "client_id": "1041526288855-gaoka0uucms23029osgaouq5ot3s5cbp.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -73,42 +105,6 @@
             "certificate_hash": "f8add14d4dcb3a366626ab187db2077c7884da27"
           }
         },
-        {
-          "client_id": "1041526288855-gaoka0uucms23029osgaouq5ot3s5cbp.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBeea-o5nSGV-g693TMynQCbMX3PzevgIo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1041526288855-gaoka0uucms23029osgaouq5ot3s5cbp.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1041526288855-lvubbob7d45irp60qdlpp5kobu4g750d.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.sodremr.patrimony"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1041526288855:android:2efa119acf02005ee31b92",
-        "android_client_info": {
-          "package_name": "com.sodremr.patrimony.central"
-        }
-      },
-      "oauth_client": [
         {
           "client_id": "1041526288855-gaoka0uucms23029osgaouq5ot3s5cbp.apps.googleusercontent.com",
           "client_type": 3

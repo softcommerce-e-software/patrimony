@@ -1,4 +1,3 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -28,13 +27,7 @@ Future<void> _firebase() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  var appCheck = FirebaseAppCheck.instance;
   if (kDebugMode) {
-    await appCheck.activate(
-      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-      androidProvider: AndroidProvider.debug,
-      appleProvider: AppleProvider.debug,
-    );
   } else {
     FlutterError.onError = (errorDetails) {
       FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
@@ -43,11 +36,6 @@ Future<void> _firebase() async {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
-    await appCheck.activate(
-      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-      androidProvider: AndroidProvider.playIntegrity,
-      appleProvider: AppleProvider.appAttest,
-    );
   }
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setDefaults({});

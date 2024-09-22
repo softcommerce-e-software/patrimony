@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:patrimony/data/user/user_datasource.dart';
 import 'package:patrimony/domain/utils/errors.dart';
@@ -18,7 +20,10 @@ class UserDataSourceImpl implements UserDataSource {
       } else {
         return await _signInWithGoogle();
       }
-    } catch (e) {
+    } catch (e, s) {
+      if (!kDebugMode) {
+        FirebaseCrashlytics.instance.recordError(e, s);
+      }
       throw LoginError();
     }
   }

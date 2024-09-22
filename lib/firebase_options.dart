@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1041526288855',
     projectId: 'patrimony-f51f9',
     storageBucket: 'patrimony-f51f9.appspot.com',
-    androidClientId: '1041526288855-i4ihl03cgoe9rp9i32q9ipfe9t4p5q2u.apps.googleusercontent.com',
+    androidClientId: '1041526288855-lteq3r1t5oqcgcj4noebmh2j41e47jr9.apps.googleusercontent.com',
     iosClientId: '1041526288855-lvubbob7d45irp60qdlpp5kobu4g750d.apps.googleusercontent.com',
     iosBundleId: 'com.sodremr.patrimony',
   );
